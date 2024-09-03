@@ -23,6 +23,7 @@
 (factorial 5)  ; 120
 ```
 5. Working with Lists
+```
 (setq myList '(1 2 3 4 5))
 (head myList)  ; 1
 (tail myList)  ; (2 3 4 5)
