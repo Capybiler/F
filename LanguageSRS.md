@@ -1,12 +1,11 @@
-Project F
-Functional Language
+# Project F - Functional Language
 
-Introduction & Common Description
+### Introduction & Common Description
 
 The F language can be considered as a reduced version of the Lisp language with
 some simplifications and modifications. It takes the basic syntax and semantics from Lisp.
 
-Program structure and declarations
+### Program structure and declarations
 
 The F program is a sequence of elements. Elements are either atoms – identifiers or
 literals – or lists.
@@ -34,21 +33,21 @@ Some lists have a special meaning. If a list starts with one of the following ke
 called special form and is evaluated as described in the following section.
 
 The keywords of the special forms are:
-- quote
-- setq
-- func
-- lambda
-- prog
-- cond
-- while
-- return
-- break
+- `quote`
+- `setq`
+- `func`
+- `lambda`
+- `prog`
+- `cond`
+- `while`
+- `return`
+- `break`
 
-Special forms
+### Special forms
 
 Special forms introduce language notions that have some predefined meaning. Each
 special form is actually a list where the very first element is a keyword. The rest of the
-special form can contain a number of Elements that are specific for each special form.
+special form can contain a number of `Element`s that are specific for each special form.
 
 ```
 ( quote Element )
@@ -98,7 +97,7 @@ considered as the body of the function.
 
 Notice that each user-defined function introduces its own local context. This
 means that atoms representing parameters are considered local to the function
-as well as all atoms introduced by the setq form. If the setq form introduces an
+as well as all atoms introduced by the `setq` form. If the `setq` form introduces an
 atom with the same name as an atom from an outer context, the local atom
 shadows the atom from the outer context. The local context of the function
 disappears after exiting from the function.
@@ -181,7 +180,7 @@ The form makes sense within a while form. It unconditionally interrupts the
 execution of the nearest while form. If there is no such enclosing form then the
 whole program terminates.
 
-Predefined functions
+### Predefined functions
 
 All predefined functions perform some actions on their arguments and return some
 result. The result can be an atom, a list, a literal, or null. Function calls are represented
@@ -200,7 +199,7 @@ The common algorithm of function call evaluation is as follows:
 - The function accepts evaluated arguments and performs actions specific to this particular function.
 - After completing the function’s actions, a value is returned to the calling function.
 
-Arithmetic functions
+### Arithmetic functions
 
 ```
 ( plus Element Element)
@@ -214,7 +213,7 @@ should be of an integer or real value. The functions perform addition, subtracti
 multiplication or division on their arguments. The result of the function call is the
 result of the corresponding action.
 
-Operations on lists
+### Operations on lists
 
 ```
 ( head Element )
@@ -239,7 +238,7 @@ should be a list (perhaps, empty). The function constructs a new list adding its
 first argument as the first element to the list from the second argument. The
 function returns the list constructed.
 
-Comparisons
+### Comparisons
 
 ```
 ( equal Element Element )
@@ -254,7 +253,7 @@ After evaluation, the arguments should be of type integer, real, or boolean. The
 functions perform usual comparisons and return a boolean value depending on
 the result of comparison.
 
-Predicates
+### Predicates
 
 ```
 ( isint Element )
@@ -269,7 +268,7 @@ After evaluation, the arguments should be of any type. The functions return a
 boolean value: true, if the argument is of type that the function expects, and
 false otherwise.
 
-Logical operators
+### Logical operators
 
 ```
 ( and Element Element )
@@ -281,7 +280,7 @@ Logical operators
 After evaluation, the arguments should be of boolean type. The functions perform
 usual logical operators on evaluated arguments and return a boolean value.
 
-Evaluator
+### Evaluator
 
 ```
 ( eval Element )
@@ -292,7 +291,7 @@ the function treats it as a valid program and tries to evaluate it. In that case
 function returns the value that the program issues. If the argument is a literal or
 atom the function just return the argument.
 
-The Language F Grammar
+### The Language F Grammar
 
 The language grammar follows the ideas of its predecessors and is remarkably simple.
 
