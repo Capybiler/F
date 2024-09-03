@@ -222,7 +222,7 @@ counter
 120
 ```
 
-### Program 2: Fibonacci Sequence Generator
+### Test Case 17: Fibonacci Sequence Generator
 **Input:**
 ```lisp
 (func fib (n)
