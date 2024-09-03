@@ -1,12 +1,11 @@
-Project F
-Functional Language
+# Project F - Functional Language
 
-Introduction & Common Description
+### Introduction & Common Description
 
-The F language can be considered as a reduced version of the Lisp language with
+The F language can be considered as a reduced version of the **Lisp** language with
 some simplifications and modifications. It takes the basic syntax and semantics from Lisp.
 
-Program structure and declarations
+### Program structure and declarations
 
 The F program is a sequence of elements. Elements are either atoms – identifiers or
 literals – or lists.
@@ -31,24 +30,24 @@ to a function, whose name is the name of the first list element, and the other l
 elements are considered arguments of the call.
 
 Some lists have a special meaning. If a list starts with one of the following keywords it is
-called special form and is evaluated as described in the following section.
+called *special form* and is evaluated as described in the following section.
 
 The keywords of the special forms are:
-- quote
-- setq
-- func
-- lambda
-- prog
-- cond
-- while
-- return
-- break
+- `quote`
+- `setq`
+- `func`
+- `lambda`
+- `prog`
+- `cond`
+- `while`
+- `return`
+- `break`
 
-Special forms
+### Special forms
 
 Special forms introduce language notions that have some predefined meaning. Each
 special form is actually a list where the very first element is a keyword. The rest of the
-special form can contain a number of Elements that are specific for each special form.
+special form can contain a number of `Element`s that are specific for each special form.
 
 ```
 ( quote Element )
@@ -98,13 +97,13 @@ considered as the body of the function.
 
 Notice that each user-defined function introduces its own local context. This
 means that atoms representing parameters are considered local to the function
-as well as all atoms introduced by the setq form. If the setq form introduces an
+as well as all atoms introduced by the `setq` form. If the `setq` form introduces an
 atom with the same name as an atom from an outer context, the local atom
 shadows the atom from the outer context. The local context of the function
 disappears after exiting from the function.
 
-Notice that only three special forms introduce local contexts: func, lambda, and
-prog.
+Notice that only three special forms introduce local contexts: `func`, `lambda`, and
+`prog`.
 
 Examples:
 
@@ -119,7 +118,7 @@ Examples:
 ```
 
 The form introduces a new user-defined unnamed function. The meaning of its
-parameters is the same as for the second and the third parameters of the func
+parameters is the same as for the second and the third parameters of the `func`
 form. The unnamed function can further be called by that name of an atom that
 gets it as the value, or directly.
 
@@ -138,7 +137,7 @@ Examples:
 
 The form introduces a sequence of elements that are to be evaluated
 sequentially. The first parameter is the list of atoms that represent the local
-context of the form. These atoms become known everywhere within the prog
+context of the form. These atoms become known everywhere within the `prog`
 form and disappear after completing its evaluation. The second argument
 contains elements that are to be evaluated sequentially.
 
@@ -148,28 +147,28 @@ contains elements that are to be evaluated sequentially.
 
 The form is the construct for conditional evaluation. It contains two or three
 arguments. The evaluation of the form starts from evaluating its first argument.
-The result of the evaluation should be of type boolean. If the result is true the
+The result of the evaluation should be of type boolean. If the result is `true` the
 second argument is evaluated, and the result becomes the result of the whole
 form. Otherwise, the third argument is evaluated and the result becomes the
-result of the whole form. If the result of the first argument is false and there is no
-third argument in the form, the result of the whole form is null.
+result of the whole form. If the result of the first argument is `false` and there is no
+third argument in the form, the result of the whole form is `null`.
 
 ```
 ( while Element Element )
 ```
 
 The form specifies repetitions. First, the second argument is evaluated. If the
-result is true then the second argument is evaluated, and the control from goes
+result is `true` then the second argument is evaluated, and the control from goes
 back for evaluating of the first argument again. In other words, the first argument
-is evaluated before each iteration. If the result is false then the evaluation of the
-form finishes. The result of the form is always null.
+is evaluated before each iteration. If the result is `false` then the evaluation of the
+form finishes. The result of the form is always `null`.
 
 ```
 ( return Element )
 ```
 
-The form makes sense within a form that defines a local context (func, lambda
-or prog). It evaluates its argument and interrupts the execution of the nearest
+The form makes sense within a form that defines a local context (`func`, `lambda`
+or `prog`). It evaluates its argument and interrupts the execution of the nearest
 enclosing form with the context. If there is no such enclosing form then the whole
 program terminates.
 
@@ -177,11 +176,11 @@ program terminates.
 ( break )
 ```
 
-The form makes sense within a while form. It unconditionally interrupts the
-execution of the nearest while form. If there is no such enclosing form then the
+The form makes sense within a `while` form. It unconditionally interrupts the
+execution of the nearest `while` form. If there is no such enclosing form then the
 whole program terminates.
 
-Predefined functions
+### Predefined functions
 
 All predefined functions perform some actions on their arguments and return some
 result. The result can be an atom, a list, a literal, or null. Function calls are represented
@@ -190,17 +189,18 @@ called.
 
 Notice that a function name is considered as the name of a predefined function only if it
 is written as the first atom in a list. In other contexts, a function name is treated as a
-name of a usual atom. For example, the list like (4 minus times divide) is just a list
+name of a usual atom. For example, the list like `(4 minus times divide)` is just a list
 of atoms but not function calls.
 
 The common algorithm of function call evaluation is as follows:
+
 - All arguments are evaluated. The evaluation order is from the first argument to the last one.
 - The results of argument evaluation are passed to the function.
 - If the current value of an argument doesn’t meet the function requirements, the whole program stops execution.
 - The function accepts evaluated arguments and performs actions specific to this particular function.
 - After completing the function’s actions, a value is returned to the calling function.
 
-Arithmetic functions
+### Arithmetic functions
 
 ```
 ( plus Element Element)
@@ -214,7 +214,7 @@ should be of an integer or real value. The functions perform addition, subtracti
 multiplication or division on their arguments. The result of the function call is the
 result of the corresponding action.
 
-Operations on lists
+### Operations on lists
 
 ```
 ( head Element )
@@ -239,7 +239,7 @@ should be a list (perhaps, empty). The function constructs a new list adding its
 first argument as the first element to the list from the second argument. The
 function returns the list constructed.
 
-Comparisons
+### Comparisons
 
 ```
 ( equal Element Element )
@@ -254,7 +254,7 @@ After evaluation, the arguments should be of type integer, real, or boolean. The
 functions perform usual comparisons and return a boolean value depending on
 the result of comparison.
 
-Predicates
+### Predicates
 
 ```
 ( isint Element )
@@ -266,10 +266,10 @@ Predicates
 ```
 
 After evaluation, the arguments should be of any type. The functions return a
-boolean value: true, if the argument is of type that the function expects, and
-false otherwise.
+boolean value: `true`, if the argument is of type that the function expects, and
+`false` otherwise.
 
-Logical operators
+### Logical operators
 
 ```
 ( and Element Element )
@@ -281,7 +281,7 @@ Logical operators
 After evaluation, the arguments should be of boolean type. The functions perform
 usual logical operators on evaluated arguments and return a boolean value.
 
-Evaluator
+### Evaluator
 
 ```
 ( eval Element )
@@ -292,7 +292,7 @@ the function treats it as a valid program and tries to evaluate it. In that case
 function returns the value that the program issues. If the argument is a literal or
 atom the function just return the argument.
 
-The Language F Grammar
+### The Language F Grammar
 
 The language grammar follows the ideas of its predecessors and is remarkably simple.
 
