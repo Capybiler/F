@@ -1,5 +1,3 @@
-Here are 15 test cases that cover the various features of the F language:
-
 ### Test Case 1: Basic Arithmetic Operations
 **Input:**
 ```lisp
@@ -209,4 +207,33 @@ counter
 'greater
 ```
 
-These test cases collectively cover all the constructs and operations defined in the F language, ensuring that each feature is tested thoroughly.
+### Test Case 16: Factorial Calculation
+**Input:**
+```lisp
+(func factorial (n)
+  (cond (less n 2) 1
+        true (times n (factorial (minus n 1))))
+)
+(factorial 5)
+```
+
+**Expected Output:**
+```
+120
+```
+
+### Program 2: Fibonacci Sequence Generator
+**Input:**
+```lisp
+(func fib (n)
+  (cond (lesseq n 0) 0
+        (equal n 1) 1
+        true (plus (fib (minus n 1)) (fib (minus n 2))))
+)
+(fib 10)
+```
+
+**Expected Output:**
+```
+55
+```
