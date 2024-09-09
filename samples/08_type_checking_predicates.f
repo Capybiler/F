@@ -1,0 +1,7 @@
+(setq a 5)
+(setq b true)
+(setq c '(1 2 3))
+(isint a)
+(isbool b)
+(islist c)
+(isnull a)
