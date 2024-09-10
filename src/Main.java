@@ -14,9 +14,14 @@ public class Main {
         String inputFilePath = args[0];
 
         FileReader fileReader = new FileReader();
+        String  input = "";
+        try {
+            input = fileReader.readFile(inputFilePath);
+        } catch (Exception e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
 
         try {
-            String input = fileReader.readFile(inputFilePath);
             Lexer lexer = new Lexer(input);
             List<Token> tokens = lexer.lex();
 
@@ -24,7 +29,7 @@ public class Main {
                 System.out.println(token);
             }
         } catch (Exception e) {
-            System.out.println("Error reading file: " + e.getMessage());
+            System.out.println("Error lexing input: " + e.getMessage());
         }
     }
 }
