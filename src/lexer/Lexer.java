@@ -93,24 +93,31 @@ public class Lexer {
         keywords.put("xor", TokenType.XOR);
         keywords.put("not", TokenType.NOT);
         keywords.put("eval", TokenType.EVAL);
+        keywords.put("null", TokenType.NULL);
     }
 
+    // Return if the current token is a real number
     private boolean isCurrentTokenReal() {
         return isRealCurrentToken;
     }
 
+    // Return if the current token is a number
     private boolean isCurrentTokenNumeric() {
         return isNumericCurrentToken;
     }
 
+    // Return if the current token is an integer
     private boolean isCurrentTokenInteger() {
+        // The current token is an integer if it is a number and not a real number
         return isNumericCurrentToken && !isRealCurrentToken;
     }
 
+    // Set the current token as a number
     private void setNumericCurrentToken() {
         isNumericCurrentToken = true;
     }
 
+    // Set the current token as a real number
     private void setRealCurrentToken() {
         isRealCurrentToken = true;
     }
@@ -147,7 +154,7 @@ public class Lexer {
     }
 
     // Handle the token in the current token string builder
-    private void handlePreviousToken() {
+    private void handleCurrentToken() {
         // If the current token string builder is empty, return
         if (currentTokenStringBuilder.isEmpty()) {
             return;
@@ -165,60 +172,56 @@ public class Lexer {
         if (tokenType != null) {
             // If the token string is a keyword, add a token with the corresponding token type
             tokens.add(new Token(tokenType, new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum)));
-        } else {
-            try {
-                tokens.add(
-                    new Token(
-                        TokenType.INTEGER,
-                        new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
-                        Long.parseLong(tokenString)
-                    )
-                );
-                return;
-            } catch (NumberFormatException _) {}
-
-            try {
-                tokens.add(
-                    new Token(
-                        TokenType.REAL,
-                        new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
-                        Double.parseDouble(tokenString)
-                    )
-                );
-                return;
-            } catch (NumberFormatException _) {}
-
-            if (tokenString.equals("true") || tokenString.equals("false")) {
-                tokens.add(
-                    new Token(
-                        TokenType.BOOLEAN,
-                        new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
-                        Boolean.parseBoolean(tokenString)
-                    )
-                );
-                return;
-            }
-
-            if (tokenString.equals("null")) {
-                tokens.add(
-                    new Token(
-                        TokenType.NULL,
-                        new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum)
-                    )
-                );
-                return;
-            }
-
-            tokens.add(
-                new Token(
-                    TokenType.IDENTIFIER,
-                    new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
-                    tokenString
-                )
-            );
+            return;
         }
+
+        if (isCurrentTokenInteger()) {
+            // If the token string is an integer, add a token with the integer value
+            tokens.add(
+                    new Token(
+                            TokenType.INTEGER,
+                            new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
+                            Long.parseLong(tokenString)
+                    )
+            );
+            return;
+        }
+
+        if (isCurrentTokenReal()) {
+            // If the token string is a real number, add a token with the real number value
+            tokens.add(
+                    new Token(
+                            TokenType.REAL,
+                            new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
+                            Double.parseDouble(tokenString)
+                    )
+            );
+            return;
+        }
+
+        if (tokenString.equals("true") || tokenString.equals("false")) {
+            // If the token string is a boolean, add a token with the boolean value
+            tokens.add(
+                    new Token(
+                            TokenType.BOOLEAN,
+                            new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
+                            Boolean.parseBoolean(tokenString)
+                    )
+            );
+            return;
+        }
+
+        // If the token string is an identifier, add a token with the identifier value
+        tokens.add(
+                new Token(
+                        TokenType.IDENTIFIER,
+                        new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
+                        tokenString
+                )
+        );
     }
 
+    // Reset the current token string builder
     private void resetCurrentToken() {
         currentTokenStringBuilder.setLength(0);
         tokenBeginLineNum = lineNum;
@@ -227,107 +230,157 @@ public class Lexer {
         isRealCurrentToken = false;
     }
 
+    private void handleAndResetCurrentToken() {
+        handleCurrentToken();
+        resetCurrentToken();
+    }
+
+    // Return if the current token string builder is empty
     private boolean isCurrentTokenEmpty() {
         return currentTokenStringBuilder.isEmpty();
     }
 
-    private char prevCurrentToken() {
-        return currentTokenStringBuilder.charAt(currentTokenStringBuilder.length() - 1);
-    }
-
+    // Tokenize the input string
     public List<Token> lex() {
         while (true) {
+            // Peek the current character
             char c = peek();
 
+            // Handle the current character
             switch (c) {
                 // Skip whitespace characters
                 case ' ':
                 case '\t':
                 case '\n':
                 case '\r':
-                    handlePreviousToken();
-                    resetCurrentToken();
+                    // Handle the current token and reset the current token string builder
+                    handleAndResetCurrentToken();
 
+                    // If the current character is a newline character,
+                    // set the flag to indicate the next character in a new line
                     if (c == '\n') {
                         nextIsNewLine = true;
                     }
+
+                    // Move to the next character
                     advance();
 
                     break;
                 case '(':
-                    handlePreviousToken();
-                    resetCurrentToken();
+                    // Handle the current token and reset the current token string builder
+                    handleAndResetCurrentToken();
 
+                    // Add a token with the left parenthesis token type
                     tokens.add(new Token(TokenType.LEFT_PAREN, new TokenSpan(lineNum, columnNum, columnNum)));
+
+                    // Move to the next character
                     advance();
 
                     break;
                 case ')':
-                    handlePreviousToken();
-                    resetCurrentToken();
+                    // Handle the current token and reset the current token string builder
+                    handleAndResetCurrentToken();
 
+                    // Add a token with the right parenthesis token type
                     tokens.add(new Token(TokenType.RIGHT_PAREN, new TokenSpan(lineNum, columnNum, columnNum)));
+
+                    // Move to the next character
                     advance();
 
                     break;
                 case '+':
                 case '-':
+                    // Plus or minus sign is only allowed at the beginning of a number
+                    // If the current token is not empty, throw a lexical analysis error
                     if (!isCurrentTokenEmpty()) {
                         throw new LexicalAnalysisError('+', lineNum, columnNum);
                     }
 
+                    // Save the column number as the beginning of the current token
                     tokenBeginColumnNum = columnNum;
+
+                    // Append the current character to the current token string builder
                     currentTokenStringBuilder.append(c);
 
+                    // Set the current token as a number
                     setNumericCurrentToken();
 
+                    // Move to the next character
                     advance();
 
                     break;
                 case '.':
+                    // Dot is only allowed in a real number
+                    // So before processing the dot, the current token must be an integer
+                    // If the current token is not an integer, throw a lexical analysis error
                     if (!isCurrentTokenInteger()) {
                         throw new LexicalAnalysisError('.', lineNum, columnNum);
                     }
 
+                    // Append the current character to the current token string builder
                     currentTokenStringBuilder.append(c);
 
+                    // Set the current token as a real number
                     setRealCurrentToken();
 
+                    // Move to the next character
                     advance();
 
                     break;
                 case '\'':
+                    // Quote is only allowed as a first and only character of a token
+                    // If the current token is not empty, throw a lexical analysis error
                     if (!isCurrentTokenEmpty()) {
                         throw new LexicalAnalysisError('\'', lineNum, columnNum);
                     }
 
+                    // Add a token with the quote token type
                     tokens.add(new Token(TokenType.QUOTE, new TokenSpan(lineNum, columnNum, columnNum + 1)));
+
+                    // Move to the next character
                     advance();
+
                     break;
                 case 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
                      'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                      'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z':
+                    // If the current token is empty, save the column number as the beginning of the current token
                     if (isCurrentTokenEmpty()) {
                         tokenBeginColumnNum = columnNum;
                     }
 
+                    // Letter can not be part of a number
+                    // If the current token is a number, throw a lexical analysis error
                     if (isCurrentTokenNumeric()) {
                         throw new LexicalAnalysisError(c, lineNum, columnNum);
                     }
 
+                    // Append the current character to the current token string builder
                     currentTokenStringBuilder.append(c);
+
+                    // Move to the next character
                     advance();
+
                     break;
                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+                    // If the current token is empty,
+                    // save the column number as the beginning of the current token
+                    // and set the current token as a number
                     if (isCurrentTokenEmpty()) {
                         tokenBeginColumnNum = columnNum;
+                        setNumericCurrentToken();
                     }
 
+                    // Append the current character to the current token string builder
                     currentTokenStringBuilder.append(c);
+
+                    // Set the current token as a number
                     advance();
+
                     break;
                 case '\0':
-                    handlePreviousToken();
+                    // Handle the current token and reset the current token string builder
+                    handleAndResetCurrentToken();
                     return tokens;
             }
         }
