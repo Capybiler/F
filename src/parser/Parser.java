@@ -1,6 +1,7 @@
 package parser;
 
 import lexer.Token;
+import lexer.TokenSpan;
 import lexer.TokenType;
 import parser.nodes.*;
 
@@ -14,6 +15,13 @@ public class Parser {
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
+
+        addCoveringParentheses();
+    }
+
+    private void addCoveringParentheses() {
+        this.tokens.add(0, new Token(TokenType.LEFT_PAREN, new TokenSpan(0, 0, 0)));
+        this.tokens.add(new Token(TokenType.RIGHT_PAREN, new TokenSpan(-1, -1, -1)));
     }
 
     public ASTNode parse() {
