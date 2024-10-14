@@ -76,7 +76,6 @@ public class Parser {
     }
 
     private ASTNode parseList() {
-
         advance();
 
         List<ASTNode> elements = new ArrayList<>();
@@ -87,7 +86,6 @@ public class Parser {
             }
             elements.add(parseExpression());
         }
-
 
         advance();
 
@@ -121,14 +119,18 @@ public class Parser {
     }
 
     private ASTNode parseQuote() {
-
         advance();
+
         ASTNode quotedElement = parseExpression();
+
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
+
         return new QuoteASTNode(quotedElement);
     }
 
     private ASTNode parseSetq() {
-
         advance();
 
         if (!match(TokenType.IDENTIFIER)) {
@@ -138,11 +140,14 @@ public class Parser {
         AtomASTNode variable = (AtomASTNode) parseAtom();
         ASTNode value = parseExpression();
 
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
+
         return new SetqASTNode(variable, value);
     }
 
     private ASTNode parseFunc() {
-
         advance();
 
         if (!match(TokenType.IDENTIFIER)) {
@@ -151,26 +156,30 @@ public class Parser {
 
         AtomASTNode functionName = (AtomASTNode) parseAtom();
 
-
         if (!match(TokenType.LEFT_PAREN)) {
             throw new RuntimeException("Expected '(' after function name");
         }
+
         advance();
 
         List<AtomASTNode> parameters = new ArrayList<>();
+
         while (!match(TokenType.RIGHT_PAREN)) {
             parameters.add((AtomASTNode) parseAtom());
         }
+
         advance();
 
-
         ASTNode body = parseExpression();
+
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
 
         return new FuncASTNode(functionName, parameters, body);
     }
 
     private ASTNode parseCond() {
-
         advance();
 
         ASTNode condition = parseExpression();
@@ -182,48 +191,67 @@ public class Parser {
 
         ASTNode falseBranch = parseExpression();
 
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
+
         return new CondASTNode(condition, trueBranch, falseBranch);
     }
 
     private ASTNode parseProg() {
-
         advance();
 
         List<AtomASTNode> localVars = new ArrayList<>();
+
         if (match(TokenType.LEFT_PAREN)) {
             advance();
-
             while (!match(TokenType.RIGHT_PAREN)) {
                 localVars.add((AtomASTNode) parseAtom());
             }
-
             advance();
         }
 
         ASTNode body = parseExpression();
 
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
+
         return new ProgASTNode(localVars, body);
     }
 
     private ASTNode parseWhile() {
-
         advance();
 
         ASTNode condition = parseExpression();
         ASTNode body = parseExpression();
 
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
+
         return new WhileASTNode(condition, body);
     }
 
     private ASTNode parseReturn() {
-
         advance();
+
         ASTNode value = parseExpression();
+
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
+
         return new ReturnASTNode(value);
     }
 
     private ASTNode parseBreak() {
         advance();
+
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
+
         return new BreakASTNode();
     }
 }
