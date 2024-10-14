@@ -20,7 +20,7 @@ public class Parser {
     }
 
     private void addCoveringParentheses() {
-        this.tokens.add(0, new Token(TokenType.LEFT_PAREN, new TokenSpan(0, 0, 0)));
+        this.tokens.addFirst(new Token(TokenType.LEFT_PAREN, new TokenSpan(0, 0, 0)));
         this.tokens.add(new Token(TokenType.RIGHT_PAREN, new TokenSpan(-1, -1, -1)));
     }
 
@@ -99,18 +99,13 @@ public class Parser {
     private ASTNode parseLiteral() {
         Token literal = advance();
 
-        switch (literal.getType()) {
-            case INTEGER:
-                return new LiteralASTNode(literal.getIntValue());
-            case REAL:
-                return new LiteralASTNode(literal.getRealValue());
-            case BOOLEAN:
-                return new LiteralASTNode(literal.getBoolValue());
-            case NULL:
-                return new LiteralASTNode(null);
-            default:
-                throw new RuntimeException("Unexpected literal type: " + literal);
-        }
+        return switch (literal.getType()) {
+            case INTEGER -> new LiteralASTNode(literal.getIntValue());
+            case REAL -> new LiteralASTNode(literal.getRealValue());
+            case BOOLEAN -> new LiteralASTNode(literal.getBoolValue());
+            case NULL -> new LiteralASTNode(null);
+            default -> throw new RuntimeException("Unexpected literal type: " + literal);
+        };
     }
 
     private ASTNode parseAtom() {
