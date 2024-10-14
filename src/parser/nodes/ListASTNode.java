@@ -15,6 +15,6 @@ public class ListASTNode extends ASTNode {
 
     @Override
     public String toString() {
-        return "List" + elements;
+        return "List(" + String.join(", ", elements.stream().map(Object::toString).toArray(String[]::new)) + ")";
     }
 }
