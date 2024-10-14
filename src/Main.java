@@ -8,12 +8,12 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.out.println("Usage: java Main <input-file>");
+        if (args.length != 1 && args.length != 2) {
+            System.out.println("Usage: java Main <input-file> --with-indent");
             System.exit(1);
         }
 
-        String  input = "";
+        String input = "";
         List<Token> tokens = null;
         ASTNode tree = null;
 
@@ -34,10 +34,6 @@ public class Main {
 
         assert tokens != null;
 
-        for (Token token : tokens) {
-            System.out.println(token);
-        }
-
         try {
             Parser parser = new Parser(tokens);
             tree = parser.parse();
@@ -45,6 +41,16 @@ public class Main {
             System.out.println("Error parsing input: " + e.getMessage());
         }
 
-        System.out.println(tree);
+        assert tree != null;
+
+        try {
+            if (args.length == 2 && args[1].equals("--with-indent")) {
+                System.out.println(tree.toStringWithIndent(0));
+            } else {
+                System.out.println(tree);
+            }
+        } catch (Exception e) {
+            System.out.println("Error printing AST: " + e.getMessage());
+        }
     }
 }
