@@ -5,4 +5,14 @@ public class BreakASTNode extends ASTNode {
     public String toString() {
         return "Break";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Break";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return true;
+    }
 }

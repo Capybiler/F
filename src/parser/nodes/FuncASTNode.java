@@ -29,4 +29,14 @@ public class FuncASTNode extends ASTNode {
     public String toString() {
         return "Func(" + name + ", " + parameters + ", " + body + ")";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Func(\n" + name.toStringWithIndent(indent + 1) + ",\n" + "\t".repeat(indent + 1) + parameters + ",\n" + body.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return true;
+    }
 }

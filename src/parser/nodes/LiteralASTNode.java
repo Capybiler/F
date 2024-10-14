@@ -15,4 +15,14 @@ public class LiteralASTNode extends ASTNode {
     public String toString() {
         return "Literal(" + value + ")";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Literal(" + value + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return false;
+    }
 }

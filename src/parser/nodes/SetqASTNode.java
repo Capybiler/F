@@ -21,4 +21,14 @@ public class SetqASTNode extends ASTNode {
     public String toString() {
         return "Setq(" + variable + ", " + value + ")";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Setq(\n" + "\t".repeat(indent + 1) + variable + ",\n" + value.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return true;
+    }
 }

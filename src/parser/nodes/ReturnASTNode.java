@@ -15,4 +15,14 @@ public class ReturnASTNode extends ASTNode {
     public String toString() {
         return "Return(" + value + ")";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Return(\n" + value.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return true;
+    }
 }

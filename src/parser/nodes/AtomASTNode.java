@@ -15,4 +15,14 @@ public class AtomASTNode extends ASTNode {
     public String toString() {
         return "Atom(" + name + ")";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Atom(" + name + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return false;
+    }
 }

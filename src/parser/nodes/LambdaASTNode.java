@@ -23,4 +23,14 @@ public class LambdaASTNode extends ASTNode {
     public String toString() {
         return "Lambda(" + parameters + ", " + body + ")";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Lambda(\n" + "\t".repeat(indent + 1) + parameters + ",\n" + body.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return true;
+    }
 }

@@ -27,4 +27,14 @@ public class CondASTNode extends ASTNode {
     public String toString() {
         return "Cond(" + condition + ", " + trueBranch + ", " + falseBranch + ")";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Cond(\n" + condition.toStringWithIndent(indent + 1) + ",\n" + trueBranch.toStringWithIndent(indent + 1) + ",\n" + falseBranch.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return true;
+    }
 }

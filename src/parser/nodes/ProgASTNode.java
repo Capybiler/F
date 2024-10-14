@@ -4,9 +4,9 @@ import java.util.List;
 
 public class ProgASTNode extends ASTNode {
     private final List<AtomASTNode> localVariables;
-    private final List<ASTNode> body;
+    private final ASTNode body;
 
-    public ProgASTNode(List<AtomASTNode> localVariables, List<ASTNode> body) {
+    public ProgASTNode(List<AtomASTNode> localVariables, ASTNode body) {
         this.localVariables = localVariables;
         this.body = body;
     }
@@ -15,12 +15,22 @@ public class ProgASTNode extends ASTNode {
         return localVariables;
     }
 
-    public List<ASTNode> getBody() {
+    public ASTNode getBody() {
         return body;
     }
 
     @Override
     public String toString() {
         return "Prog(" + localVariables + ", " + body + ")";
+    }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "Prog(\n" + "\t".repeat(indent + 1) + localVariables + ",\n" + body.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return true;
     }
 }

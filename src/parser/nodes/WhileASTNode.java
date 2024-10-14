@@ -21,5 +21,14 @@ public class WhileASTNode extends ASTNode {
     public String toString() {
         return "While(" + condition + ", " + body + ")";
     }
-}
 
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "While(\n" + condition.toStringWithIndent(indent + 1) + ",\n" + body.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return true;
+    }
+}

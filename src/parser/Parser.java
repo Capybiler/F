@@ -83,6 +83,10 @@ public class Parser {
 
         advance();
 
+        if (elements.size() == 1 && elements.getFirst().isSpecialForm()) {
+            return elements.getFirst();
+        }
+
         return new ListASTNode(elements);
     }
 
@@ -183,12 +187,7 @@ public class Parser {
             advance();
         }
 
-        List<ASTNode> body = new ArrayList<>();
-        while (!match(TokenType.RIGHT_PAREN)) {
-            body.add(parseExpression());
-        }
-
-        advance();
+        ASTNode body = parseExpression();
 
         return new ProgASTNode(localVars, body);
     }

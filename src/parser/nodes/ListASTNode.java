@@ -17,4 +17,14 @@ public class ListASTNode extends ASTNode {
     public String toString() {
         return "List(" + String.join(", ", elements.stream().map(Object::toString).toArray(String[]::new)) + ")";
     }
+
+    @Override
+    public String toStringWithIndent(int indent) {
+        return "\t".repeat(indent) + "List(\n" + elements.stream().map(e -> e.toStringWithIndent(indent + 1)).reduce((a, b) -> a + ",\n" + b).orElse("") + "\n" + "\t".repeat(indent) + ")";
+    }
+
+    @Override
+    public boolean isSpecialForm() {
+        return false;
+    }
 }
