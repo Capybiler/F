@@ -167,6 +167,11 @@ public class Parser {
 
         ASTNode condition = parseExpression();
         ASTNode trueBranch = parseExpression();
+
+        if (match(TokenType.RIGHT_PAREN)) {
+            return new CondASTNode(condition, trueBranch, null);
+        }
+
         ASTNode falseBranch = parseExpression();
 
         return new CondASTNode(condition, trueBranch, falseBranch);

@@ -30,6 +30,9 @@ public class CondASTNode extends ASTNode {
 
     @Override
     public String toStringWithIndent(int indent) {
+        if (falseBranch == null) {
+            return "\t".repeat(indent) + "Cond(\n" + condition.toStringWithIndent(indent + 1) + ",\n" + trueBranch.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+        }
         return "\t".repeat(indent) + "Cond(\n" + condition.toStringWithIndent(indent + 1) + ",\n" + trueBranch.toStringWithIndent(indent + 1) + ",\n" + falseBranch.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
     }
 
