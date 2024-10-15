@@ -6,4 +6,6 @@ public abstract class ASTNode {
     public abstract String toStringWithIndent(int indent);
 
     public abstract boolean isSpecialForm();
+
+    public abstract String toJson();
 }

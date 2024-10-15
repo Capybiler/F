@@ -60,6 +60,8 @@ public class Parser {
             return parseSetq();
         } else if (match(TokenType.FUNC)) {
             return parseFunc();
+        } else if (match(TokenType.LAMBDA)) {
+            return parseLambda();
         } else if (match(TokenType.PROG)) {
             return parseProg();
         } else if (match(TokenType.COND)) {
@@ -172,6 +174,32 @@ public class Parser {
         }
 
         return new FuncASTNode(functionName, parameters, body);
+    }
+
+    private ASTNode parseLambda() {
+        advance();
+
+        if (!match(TokenType.LEFT_PAREN)) {
+            throw new RuntimeException("Expected '(' after lambda");
+        }
+
+        advance();
+
+        List<AtomASTNode> parameters = new ArrayList<>();
+
+        while (!match(TokenType.RIGHT_PAREN)) {
+            parameters.add((AtomASTNode) parseAtom());
+        }
+
+        advance();
+
+        ASTNode body = parseExpression();
+
+        if (!match(TokenType.RIGHT_PAREN)) {
+            throw new RuntimeException("Expected closing parenthesis");
+        }
+
+        return new LambdaASTNode(parameters, body);
     }
 
     private ASTNode parseCond() {

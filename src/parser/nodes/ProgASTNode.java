@@ -33,4 +33,9 @@ public class ProgASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return true;
     }
+
+    @Override
+    public String toJson() {
+        return "{\"type\": \"Prog\", \"localVariables\": " + localVariables.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + ", \"body\": " + body.toJson() + "}";
+    }
 }

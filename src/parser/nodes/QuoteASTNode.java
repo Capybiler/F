@@ -25,4 +25,9 @@ public class QuoteASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return true;
     }
+
+    @Override
+    public String toJson() {
+        return "{\"type\": \"Quote\", \"quotedElement\": " + quotedElement.toJson() + "}";
+    }
 }

@@ -27,4 +27,9 @@ public class ListASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return false;
     }
+
+    @Override
+    public String toJson() {
+        return "{\"type\": \"List\", \"elements\": [" + elements.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).orElse("") + "]}";
+    }
 }

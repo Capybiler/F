@@ -25,4 +25,9 @@ public class ReturnASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return true;
     }
+
+    @Override
+    public String toJson() {
+        return "{\"type\": \"Return\", \"value\": " + value.toJson() + "}";
+    }
 }

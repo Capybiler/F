@@ -31,4 +31,9 @@ public class SetqASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return true;
     }
+
+    @Override
+    public String toJson() {
+        return "{\"type\": \"Setq\", \"variable\": " + variable.toJson() + ", \"value\": " + value.toJson() + "}";
+    }
 }

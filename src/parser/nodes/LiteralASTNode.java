@@ -25,4 +25,9 @@ public class LiteralASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return false;
     }
+
+    @Override
+    public String toJson() {
+        return "{\"type\": \"Literal\", \"value\": " + value + "}";
+    }
 }

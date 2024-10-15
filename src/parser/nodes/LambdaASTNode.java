@@ -33,4 +33,9 @@ public class LambdaASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return true;
     }
+
+    @Override
+    public String toJson() {
+        return "{\"type\": \"Lambda\", \"parameters\": " + parameters.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + ", \"body\": " + body.toJson() + "}";
+    }
 }

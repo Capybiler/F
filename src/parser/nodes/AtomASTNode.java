@@ -25,4 +25,9 @@ public class AtomASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return false;
     }
+
+    @Override
+    public String toJson() {
+        return "{\"type\": \"Atom\", \"name\": \"" + name + "\"}";
+    }
 }

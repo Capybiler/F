@@ -40,4 +40,12 @@ public class CondASTNode extends ASTNode {
     public boolean isSpecialForm() {
         return true;
     }
+
+    @Override
+    public String toJson() {
+        if (falseBranch == null) {
+            return "{\"type\": \"Cond\", \"condition\": " + condition.toJson() + ", \"trueBranch\": " + trueBranch.toJson() + ", \"falseBranch\": null}";
+        }
+        return "{\"type\": \"Cond\", \"condition\": " + condition.toJson() + ", \"trueBranch\": " + trueBranch.toJson() + ", \"falseBranch\": " + falseBranch.toJson() + "}";
+    }
 }
