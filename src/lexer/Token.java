@@ -78,7 +78,11 @@ public class Token {
         return type == TokenType.INTEGER || type == TokenType.REAL || type == TokenType.BOOLEAN || type == TokenType.NULL;
     }
 
+    public boolean isPredefinedFunction() {
+        return type == TokenType.PLUS || type == TokenType.MINUS || type == TokenType.TIMES || type == TokenType.DIVIDE || type == TokenType.HEAD || type == TokenType.TAIL || type == TokenType.CONS || type == TokenType.EQUAL || type == TokenType.NONEQUAL || type == TokenType.LESS || type == TokenType.LESSEQ || type == TokenType.GREATER || type == TokenType.GREATEREQ || type == TokenType.ISINT || type == TokenType.ISREAL || type == TokenType.ISBOOL || type == TokenType.ISNULL || type == TokenType.ISATOM || type == TokenType.ISLIST || type == TokenType.AND || type == TokenType.OR || type == TokenType.XOR || type == TokenType.NOT || type == TokenType.EVAL;
+    }
+
     public boolean isIdentifier() {
-        return type == TokenType.IDENTIFIER;
+        return type == TokenType.IDENTIFIER || isPredefinedFunction();
     }
 }

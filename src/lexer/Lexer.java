@@ -171,7 +171,7 @@ public class Lexer {
 
         if (tokenType != null) {
             // If the token string is a keyword, add a token with the corresponding token type
-            tokens.add(new Token(tokenType, new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum)));
+            tokens.add(new Token(tokenType, new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum), tokenString));
             return;
         }
 
