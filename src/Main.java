@@ -8,9 +8,19 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        if (args.length != 1 && args.length != 2) {
-            System.out.println("Usage: java Main <input-file> --with-indent");
+        if (args.length < 1 || args.length > 3) {
+            System.out.println("Usage: java Main <input-file> [--with-indent] [--with-json]");
             System.exit(1);
+        }
+
+        boolean withIndent = false;
+        boolean withJson = false;
+        for (String arg : args) {
+            if (arg.equals("--with-indent")) {
+                withIndent = true;
+            } else if (arg.equals("--with-json")) {
+                withJson = true;
+            }
         }
 
         String input = "";
@@ -44,11 +54,16 @@ public class Main {
         assert tree != null;
 
         try {
-            if (args.length == 2 && args[1].equals("--with-indent")) {
+            System.out.println(tree);
+
+            if (withIndent) {
                 System.out.println(tree.toStringWithIndent(0));
-            } else {
-                System.out.println(tree);
             }
+
+            if (withJson) {
+                System.out.println(tree.toJson());
+            }
+
         } catch (Exception e) {
             System.out.println("Error printing AST: " + e.getMessage());
         }
