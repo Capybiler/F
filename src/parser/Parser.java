@@ -15,17 +15,16 @@ public class Parser {
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
-
-        addCoveringParentheses();
-    }
-
-    private void addCoveringParentheses() {
-        this.tokens.addFirst(new Token(TokenType.LEFT_PAREN, new TokenSpan(0, 0, 0)));
-        this.tokens.add(new Token(TokenType.RIGHT_PAREN, new TokenSpan(-1, -1, -1)));
     }
 
     public ASTNode parse() {
-        return parseExpression();
+        List<ASTNode> elements = new ArrayList<>();
+
+        while (hasNext()) {
+            elements.add(parseExpression());
+        }
+
+        return new ProgramASTNode(elements);
     }
 
     private boolean hasNext() {
