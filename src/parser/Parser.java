@@ -16,7 +16,7 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    public ASTNode parse() {
+    public ProgramASTNode parse() {
         List<ASTNode> elements = new ArrayList<>();
 
         while (hasNext()) {
