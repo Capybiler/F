@@ -1,5 +1,6 @@
 package parser.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FuncASTNode extends ASTNode {
@@ -43,5 +44,21 @@ public class FuncASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Func\", \"name\": " + name.toJson() + ", \"parameters\": " + parameters.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + ", \"body\": " + body.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+        List<AtomASTNode> bodyLocalContext = new ArrayList<>();
+
+        bodyLocalContext.addAll(localContext);
+        bodyLocalContext.add(name);
+        bodyLocalContext.addAll(parameters);
+
+        body.analyze(bodyLocalContext);
+    }
+
+    @Override
+    public void optimize() {
+
     }
 }

@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import java.util.List;
+
 public class ReturnASTNode extends ASTNode {
     private final ASTNode value;
 
@@ -29,5 +31,15 @@ public class ReturnASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Return\", \"value\": " + value.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+
+    }
+
+    @Override
+    public void optimize() {
+
     }
 }

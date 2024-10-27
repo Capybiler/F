@@ -32,4 +32,16 @@ public class ListASTNode extends ASTNode {
     public String toJson() {
         return "{\"type\": \"List\", \"elements\": [" + elements.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).orElse("") + "]}";
     }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+        for (ASTNode element : elements) {
+            element.analyze(localContext);
+        }
+    }
+
+    @Override
+    public void optimize() {
+
+    }
 }

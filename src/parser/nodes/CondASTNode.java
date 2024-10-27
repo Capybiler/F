@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import java.util.List;
+
 public class CondASTNode extends ASTNode {
     private final ASTNode condition;
     private final ASTNode trueBranch;
@@ -47,5 +49,19 @@ public class CondASTNode extends ASTNode {
             return "{\"type\": \"Cond\", \"condition\": " + condition.toJson() + ", \"trueBranch\": " + trueBranch.toJson() + ", \"falseBranch\": null}";
         }
         return "{\"type\": \"Cond\", \"condition\": " + condition.toJson() + ", \"trueBranch\": " + trueBranch.toJson() + ", \"falseBranch\": " + falseBranch.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+        condition.analyze(localContext);
+        trueBranch.analyze(localContext);
+        if (falseBranch != null) {
+            falseBranch.analyze(localContext);
+        }
+    }
+
+    @Override
+    public void optimize() {
+
     }
 }

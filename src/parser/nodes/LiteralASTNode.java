@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import java.util.List;
+
 public class LiteralASTNode extends ASTNode {
     private final Object value;
 
@@ -29,5 +31,13 @@ public class LiteralASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Literal\", \"value\": " + value + "}";
+    }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+    }
+
+    @Override
+    public void optimize() {
     }
 }

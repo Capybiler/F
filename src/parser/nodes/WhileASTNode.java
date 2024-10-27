@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import java.util.List;
+
 public class WhileASTNode extends ASTNode {
     private final ASTNode condition;
     private final ASTNode body;
@@ -35,5 +37,16 @@ public class WhileASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"While\", \"condition\": " + condition.toJson() + ", \"body\": " + body.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+        condition.analyze(localContext);
+        body.analyze(localContext);
+    }
+
+    @Override
+    public void optimize() {
+
     }
 }

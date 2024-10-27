@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import java.util.List;
+
 public class SetqASTNode extends ASTNode {
     private final AtomASTNode variable;
     private final ASTNode value;
@@ -35,5 +37,16 @@ public class SetqASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Setq\", \"variable\": " + variable.toJson() + ", \"value\": " + value.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+        localContext.add(variable);
+        value.analyze(localContext);
+    }
+
+    @Override
+    public void optimize() {
+
     }
 }

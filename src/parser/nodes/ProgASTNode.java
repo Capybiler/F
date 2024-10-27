@@ -1,5 +1,6 @@
 package parser.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProgASTNode extends ASTNode {
@@ -37,5 +38,20 @@ public class ProgASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Prog\", \"localVariables\": " + localVariables.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + ", \"body\": " + body.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+        List<AtomASTNode> bodyLocalContext = new ArrayList<>();
+
+        bodyLocalContext.addAll(localContext);
+        bodyLocalContext.addAll(localVariables);
+
+        body.analyze(bodyLocalContext);
+    }
+
+    @Override
+    public void optimize() {
+
     }
 }

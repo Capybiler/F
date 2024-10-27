@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import java.util.List;
+
 public class AtomASTNode extends ASTNode {
     private final String name;
 
@@ -29,5 +31,17 @@ public class AtomASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Atom\", \"name\": \"" + name + "\"}";
+    }
+
+    @Override
+    public void analyze(List<AtomASTNode> localContext) {
+        if (localContext.stream().noneMatch(atom -> atom.getName().equals(name))) {
+            throw new RuntimeException("Variable " + name + " is not defined");
+        }
+    }
+
+    @Override
+    public void optimize() {
+
     }
 }

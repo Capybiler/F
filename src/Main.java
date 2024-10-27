@@ -2,6 +2,7 @@ import lexer.Lexer;
 import lexer.Token;
 import parser.Parser;
 import parser.nodes.ASTNode;
+import parser.nodes.ProgramASTNode;
 import utils.FileReader;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class Main {
 
         String input = "";
         List<Token> tokens = null;
-        ASTNode tree = null;
+        ProgramASTNode tree = null;
 
         try {
             String inputFilePath = args[0];
@@ -33,6 +34,7 @@ public class Main {
             input = fileReader.readFile(inputFilePath);
         } catch (Exception e) {
             System.out.println("Error reading file: " + e.getMessage());
+            return;
         }
 
         try {
@@ -40,6 +42,7 @@ public class Main {
             tokens = lexer.lex();
         } catch (Exception e) {
             System.out.println("Error lexing input: " + e.getMessage());
+            return;
         }
 
         assert tokens != null;
@@ -49,9 +52,17 @@ public class Main {
             tree = parser.parse();
         } catch (Exception e) {
             System.out.println("Error parsing input: " + e.getMessage());
+            return;
         }
 
         assert tree != null;
+
+        try {
+            tree.analyze();
+        } catch (Exception e) {
+            System.out.println("Error analyzing AST: " + e.getMessage());
+            return;
+        }
 
         try {
             System.out.println(tree);
