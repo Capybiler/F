@@ -1,7 +1,6 @@
 package parser;
 
 import lexer.Token;
-import lexer.TokenSpan;
 import lexer.TokenType;
 import parser.nodes.*;
 
