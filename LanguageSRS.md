@@ -157,7 +157,7 @@ third argument in the form, the result of the whole form is `null`.
 ( while Element Element )
 ```
 
-The form specifies repetitions. First, the second argument is evaluated. If the
+The form specifies repetitions. First, the first argument is evaluated. If the
 result is `true` then the second argument is evaluated, and the control from goes
 back for evaluating of the first argument again. In other words, the first argument
 is evaluated before each iteration. If the result is `false` then the evaluation of the
