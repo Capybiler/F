@@ -1,6 +1,7 @@
 package parser.nodes;
 
 import java.util.List;
+import java.util.Map;
 
 public class CondASTNode extends ASTNode {
     private final ASTNode condition;
@@ -52,11 +53,11 @@ public class CondASTNode extends ASTNode {
     }
 
     @Override
-    public void analyze(List<AtomASTNode> localContext) {
-        condition.analyze(localContext);
-        trueBranch.analyze(localContext);
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        condition.analyze(localContext, functionParametersCount);
+        trueBranch.analyze(localContext, functionParametersCount);
         if (falseBranch != null) {
-            falseBranch.analyze(localContext);
+            falseBranch.analyze(localContext, functionParametersCount);
         }
     }
 

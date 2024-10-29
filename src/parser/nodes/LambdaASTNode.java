@@ -1,7 +1,9 @@
 package parser.nodes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LambdaASTNode extends ASTNode {
     private final List<AtomASTNode> parameters;
@@ -41,13 +43,16 @@ public class LambdaASTNode extends ASTNode {
     }
 
     @Override
-    public void analyze(List<AtomASTNode> localContext) {
-        List<AtomASTNode> bodyLocalContext = new ArrayList<>();
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        List<String> bodyLocalContext = new ArrayList<>();
 
         bodyLocalContext.addAll(localContext);
-        bodyLocalContext.addAll(parameters);
+        bodyLocalContext.addAll(parameters.stream().map(AtomASTNode::getName).toList());
 
-        body.analyze(bodyLocalContext);
+        Map<String, Integer> bodyFunctionParametersCount = new HashMap<>();
+        bodyFunctionParametersCount.putAll(functionParametersCount);
+
+        body.analyze(bodyLocalContext, bodyFunctionParametersCount);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package parser.nodes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProgramASTNode extends ASTNode {
     private final List<ASTNode> elements;
@@ -35,45 +37,77 @@ public class ProgramASTNode extends ASTNode {
     }
 
     public void analyze() {
-        List<AtomASTNode> initialPredefinedFunctions = new ArrayList<>();
+        List<String> initialPredefinedFunctions = new ArrayList<>();
 
-        initialPredefinedFunctions.add(new AtomASTNode("plus"));
-        initialPredefinedFunctions.add(new AtomASTNode("minus"));
-        initialPredefinedFunctions.add(new AtomASTNode("times"));
-        initialPredefinedFunctions.add(new AtomASTNode("divide"));
+        initialPredefinedFunctions.add("plus");
+        initialPredefinedFunctions.add("minus");
+        initialPredefinedFunctions.add("times");
+        initialPredefinedFunctions.add("divide");
 
-        initialPredefinedFunctions.add(new AtomASTNode("head"));
-        initialPredefinedFunctions.add(new AtomASTNode("tail"));
-        initialPredefinedFunctions.add(new AtomASTNode("cons"));
+        initialPredefinedFunctions.add("head");
+        initialPredefinedFunctions.add("tail");
+        initialPredefinedFunctions.add("cons");
 
-        initialPredefinedFunctions.add(new AtomASTNode("equal"));
-        initialPredefinedFunctions.add(new AtomASTNode("nonequal"));
-        initialPredefinedFunctions.add(new AtomASTNode("less"));
-        initialPredefinedFunctions.add(new AtomASTNode("lesseq"));
-        initialPredefinedFunctions.add(new AtomASTNode("greater"));
-        initialPredefinedFunctions.add(new AtomASTNode("greatereq"));
+        initialPredefinedFunctions.add("equal");
+        initialPredefinedFunctions.add("nonequal");
+        initialPredefinedFunctions.add("less");
+        initialPredefinedFunctions.add("lesseq");
+        initialPredefinedFunctions.add("greater");
+        initialPredefinedFunctions.add("greatereq");
 
-        initialPredefinedFunctions.add(new AtomASTNode("isint"));
-        initialPredefinedFunctions.add(new AtomASTNode("isreal"));
-        initialPredefinedFunctions.add(new AtomASTNode("isbool"));
-        initialPredefinedFunctions.add(new AtomASTNode("isnull"));
-        initialPredefinedFunctions.add(new AtomASTNode("isatom"));
-        initialPredefinedFunctions.add(new AtomASTNode("islist"));
+        initialPredefinedFunctions.add("isint");
+        initialPredefinedFunctions.add("isreal");
+        initialPredefinedFunctions.add("isbool");
+        initialPredefinedFunctions.add("isnull");
+        initialPredefinedFunctions.add("isatom");
+        initialPredefinedFunctions.add("islist");
 
-        initialPredefinedFunctions.add(new AtomASTNode("and"));
-        initialPredefinedFunctions.add(new AtomASTNode("or"));
-        initialPredefinedFunctions.add(new AtomASTNode("xor"));
-        initialPredefinedFunctions.add(new AtomASTNode("not"));
+        initialPredefinedFunctions.add("and");
+        initialPredefinedFunctions.add("or");
+        initialPredefinedFunctions.add("xor");
+        initialPredefinedFunctions.add("not");
 
-        initialPredefinedFunctions.add(new AtomASTNode("eval"));
+        initialPredefinedFunctions.add("eval");
 
-        analyze(initialPredefinedFunctions);
+        HashMap<String, Integer> functionParametersCount = new HashMap<>();
+
+        functionParametersCount.put("plus", 2);
+        functionParametersCount.put("minus", 2);
+        functionParametersCount.put("times", 2);
+        functionParametersCount.put("divide", 2);
+
+        functionParametersCount.put("head", 1);
+        functionParametersCount.put("tail", 1);
+        functionParametersCount.put("cons", 2);
+
+        functionParametersCount.put("equal", 2);
+        functionParametersCount.put("nonequal", 2);
+        functionParametersCount.put("less", 2);
+        functionParametersCount.put("lesseq", 2);
+        functionParametersCount.put("greater", 2);
+        functionParametersCount.put("greatereq", 2);
+
+        functionParametersCount.put("isint", 1);
+        functionParametersCount.put("isreal", 1);
+        functionParametersCount.put("isbool", 1);
+        functionParametersCount.put("isnull", 1);
+        functionParametersCount.put("isatom", 1);
+        functionParametersCount.put("islist", 1);
+
+        functionParametersCount.put("and", 2);
+        functionParametersCount.put("or", 2);
+        functionParametersCount.put("xor", 2);
+        functionParametersCount.put("not", 1);
+
+        functionParametersCount.put("eval", 1);
+
+        analyze(initialPredefinedFunctions, functionParametersCount);
     }
 
     @Override
-    public void analyze(List<AtomASTNode> localContext) {
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
         for (ASTNode element : elements) {
-            element.analyze(localContext);
+            element.analyze(localContext, functionParametersCount);
         }
     }
 

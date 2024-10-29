@@ -1,6 +1,7 @@
 package parser.nodes;
 
 import java.util.List;
+import java.util.Map;
 
 public class SetqASTNode extends ASTNode {
     private final AtomASTNode variable;
@@ -40,9 +41,15 @@ public class SetqASTNode extends ASTNode {
     }
 
     @Override
-    public void analyze(List<AtomASTNode> localContext) {
-        localContext.add(variable);
-        value.analyze(localContext);
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        localContext.add(variable.getName());
+        value.analyze(localContext, functionParametersCount);
+
+        if (value instanceof LambdaASTNode) {
+            functionParametersCount.put(variable.getName(), ((LambdaASTNode) value).getParameters().size());
+        } else {
+            functionParametersCount.put(variable.getName(), null);
+        }
     }
 
     @Override

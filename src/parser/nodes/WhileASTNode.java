@@ -1,6 +1,7 @@
 package parser.nodes;
 
 import java.util.List;
+import java.util.Map;
 
 public class WhileASTNode extends ASTNode {
     private final ASTNode condition;
@@ -40,9 +41,9 @@ public class WhileASTNode extends ASTNode {
     }
 
     @Override
-    public void analyze(List<AtomASTNode> localContext) {
-        condition.analyze(localContext);
-        body.analyze(localContext);
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        condition.analyze(localContext, functionParametersCount);
+        body.analyze(localContext, functionParametersCount);
     }
 
     @Override

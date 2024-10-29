@@ -1,6 +1,7 @@
 package parser.nodes;
 
 import java.util.List;
+import java.util.Map;
 
 public class ListASTNode extends ASTNode {
     private final List<ASTNode> elements;
@@ -34,9 +35,27 @@ public class ListASTNode extends ASTNode {
     }
 
     @Override
-    public void analyze(List<AtomASTNode> localContext) {
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        if (elements.isEmpty()) {
+            return;
+        }
+
         for (ASTNode element : elements) {
-            element.analyze(localContext);
+            element.analyze(localContext, functionParametersCount);
+        }
+
+        if (!(elements.getFirst() instanceof AtomASTNode)) {
+            return;
+        }
+
+        AtomASTNode firstElement = (AtomASTNode) elements.getFirst();
+
+        if (functionParametersCount.getOrDefault(firstElement.getName(), null) == null) {
+            return;
+        }
+
+        if (functionParametersCount.get(firstElement.getName()) != elements.size() - 1) {
+            throw new RuntimeException("Function " + firstElement.getName() + " expects " + functionParametersCount.get(firstElement.getName()) + " parameters, but got " + (elements.size() - 1) + " parameters");
         }
     }
 

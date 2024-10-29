@@ -1,6 +1,7 @@
 package parser.nodes;
 
 import java.util.List;
+import java.util.Map;
 
 public class ReturnASTNode extends ASTNode {
     private final ASTNode value;
@@ -34,7 +35,7 @@ public class ReturnASTNode extends ASTNode {
     }
 
     @Override
-    public void analyze(List<AtomASTNode> localContext) {
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
 
     }
 
