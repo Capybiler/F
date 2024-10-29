@@ -1,5 +1,8 @@
 package parser.nodes;
 
+import java.util.List;
+import java.util.Map;
+
 public class LiteralASTNode extends ASTNode {
     private final Object value;
 
@@ -29,5 +32,14 @@ public class LiteralASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Literal\", \"value\": " + value + "}";
+    }
+
+    @Override
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+    }
+
+    @Override
+    public ASTNode optimize() {
+        return this;
     }
 }

@@ -1,7 +1,10 @@
 package parser.nodes;
 
+import java.util.List;
+import java.util.Map;
+
 public class ReturnASTNode extends ASTNode {
-    private final ASTNode value;
+    private ASTNode value;
 
     public ReturnASTNode(ASTNode value) {
         this.value = value;
@@ -29,5 +32,16 @@ public class ReturnASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Return\", \"value\": " + value.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        value.analyze(localContext, functionParametersCount);
+    }
+
+    @Override
+    public ASTNode optimize() {
+        value = value.optimize();
+        return this;
     }
 }

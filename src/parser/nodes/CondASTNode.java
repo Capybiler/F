@@ -1,9 +1,12 @@
 package parser.nodes;
 
+import java.util.List;
+import java.util.Map;
+
 public class CondASTNode extends ASTNode {
-    private final ASTNode condition;
-    private final ASTNode trueBranch;
-    private final ASTNode falseBranch;
+    private ASTNode condition;
+    private ASTNode trueBranch;
+    private ASTNode falseBranch;
 
     public CondASTNode(ASTNode condition, ASTNode trueBranch, ASTNode falseBranch) {
         this.condition = condition;
@@ -47,5 +50,36 @@ public class CondASTNode extends ASTNode {
             return "{\"type\": \"Cond\", \"condition\": " + condition.toJson() + ", \"trueBranch\": " + trueBranch.toJson() + ", \"falseBranch\": null}";
         }
         return "{\"type\": \"Cond\", \"condition\": " + condition.toJson() + ", \"trueBranch\": " + trueBranch.toJson() + ", \"falseBranch\": " + falseBranch.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        condition.analyze(localContext, functionParametersCount);
+        trueBranch.analyze(localContext, functionParametersCount);
+        if (falseBranch != null) {
+            falseBranch.analyze(localContext, functionParametersCount);
+        }
+    }
+
+    @Override
+    public ASTNode optimize() {
+        condition = condition.optimize();
+        trueBranch = trueBranch.optimize();
+        if (falseBranch != null) {
+            falseBranch = falseBranch.optimize();
+        }
+
+        if (condition instanceof LiteralASTNode) {
+            if ((boolean) ((LiteralASTNode) condition).getValue()) {
+                return trueBranch;
+            } else {
+                if (falseBranch != null) {
+                    return falseBranch;
+                }
+                return new LiteralASTNode(null);
+            }
+        }
+
+        return this;
     }
 }

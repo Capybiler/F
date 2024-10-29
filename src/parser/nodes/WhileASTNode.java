@@ -1,8 +1,11 @@
 package parser.nodes;
 
+import java.util.List;
+import java.util.Map;
+
 public class WhileASTNode extends ASTNode {
-    private final ASTNode condition;
-    private final ASTNode body;
+    private ASTNode condition;
+    private ASTNode body;
 
     public WhileASTNode(ASTNode condition, ASTNode body) {
         this.condition = condition;
@@ -35,5 +38,25 @@ public class WhileASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"While\", \"condition\": " + condition.toJson() + ", \"body\": " + body.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        condition.analyze(localContext, functionParametersCount);
+        body.analyze(localContext, functionParametersCount);
+    }
+
+    @Override
+    public ASTNode optimize() {
+        condition = condition.optimize();
+        body = body.optimize();
+
+        if (condition instanceof LiteralASTNode) {
+            if (!(boolean) ((LiteralASTNode) condition).getValue()) {
+                return new LiteralASTNode(null);
+            }
+        }
+
+        return this;
     }
 }

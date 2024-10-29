@@ -1,5 +1,8 @@
 package parser.nodes;
 
+import java.util.List;
+import java.util.Map;
+
 public class BreakASTNode extends ASTNode {
     @Override
     public String toString() {
@@ -19,5 +22,15 @@ public class BreakASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Break\"}";
+    }
+
+    @Override
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+
+    }
+
+    @Override
+    public ASTNode optimize() {
+        return this;
     }
 }

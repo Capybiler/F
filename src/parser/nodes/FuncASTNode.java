@@ -1,11 +1,14 @@
 package parser.nodes;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FuncASTNode extends ASTNode {
     private final AtomASTNode name;
     private final List<AtomASTNode> parameters;
-    private final ASTNode body;
+    private ASTNode body;
 
     public FuncASTNode(AtomASTNode name, List<AtomASTNode> parameters, ASTNode body) {
         this.name = name;
@@ -43,5 +46,27 @@ public class FuncASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Func\", \"name\": " + name.toJson() + ", \"parameters\": " + parameters.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + ", \"body\": " + body.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        functionParametersCount.put(name.getName(), parameters.size());
+
+        List<String> bodyLocalContext = new ArrayList<>();
+
+        bodyLocalContext.addAll(localContext);
+        bodyLocalContext.add(name.getName());
+        bodyLocalContext.addAll(parameters.stream().map(AtomASTNode::getName).toList());
+
+        Map<String, Integer> bodyFunctionParametersCount = new HashMap<>();
+        bodyFunctionParametersCount.putAll(functionParametersCount);
+
+        body.analyze(bodyLocalContext, bodyFunctionParametersCount);
+    }
+
+    @Override
+    public ASTNode optimize() {
+        body = body.optimize();
+        return this;
     }
 }

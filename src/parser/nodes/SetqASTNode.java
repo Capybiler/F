@@ -1,8 +1,11 @@
 package parser.nodes;
 
+import java.util.List;
+import java.util.Map;
+
 public class SetqASTNode extends ASTNode {
     private final AtomASTNode variable;
-    private final ASTNode value;
+    private ASTNode value;
 
     public SetqASTNode(AtomASTNode variable, ASTNode value) {
         this.variable = variable;
@@ -35,5 +38,23 @@ public class SetqASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Setq\", \"variable\": " + variable.toJson() + ", \"value\": " + value.toJson() + "}";
+    }
+
+    @Override
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        localContext.add(variable.getName());
+        value.analyze(localContext, functionParametersCount);
+
+        if (value instanceof LambdaASTNode) {
+            functionParametersCount.put(variable.getName(), ((LambdaASTNode) value).getParameters().size());
+        } else {
+            functionParametersCount.put(variable.getName(), null);
+        }
+    }
+
+    @Override
+    public ASTNode optimize() {
+        value = value.optimize();
+        return this;
     }
 }

@@ -1,5 +1,8 @@
 package parser.nodes;
 
+import java.util.List;
+import java.util.Map;
+
 public class AtomASTNode extends ASTNode {
     private final String name;
 
@@ -29,5 +32,17 @@ public class AtomASTNode extends ASTNode {
     @Override
     public String toJson() {
         return "{\"type\": \"Atom\", \"name\": \"" + name + "\"}";
+    }
+
+    @Override
+    public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
+        if (!localContext.contains(name)) {
+            throw new RuntimeException("Variable " + name + " is not defined");
+        }
+    }
+
+    @Override
+    public ASTNode optimize() {
+        return this;
     }
 }
