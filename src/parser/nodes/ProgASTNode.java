@@ -7,29 +7,29 @@ import java.util.Map;
 
 public class ProgASTNode extends ASTNode {
     private final List<AtomASTNode> localVariables;
-    private final ASTNode body;
+    private final List<ASTNode> elements;
 
-    public ProgASTNode(List<AtomASTNode> localVariables, ASTNode body) {
+    public ProgASTNode(List<AtomASTNode> localVariables, List<ASTNode> elements) {
         this.localVariables = localVariables;
-        this.body = body;
+        this.elements = elements;
     }
 
     public List<AtomASTNode> getLocalVariables() {
         return localVariables;
     }
 
-    public ASTNode getBody() {
-        return body;
+    public List<ASTNode> getElements() {
+        return elements;
     }
 
     @Override
     public String toString() {
-        return "Prog(" + localVariables + ", " + body + ")";
+        return "Prog(" + localVariables + ", " + elements + ")";
     }
 
     @Override
     public String toStringWithIndent(int indent) {
-        return "\t".repeat(indent) + "Prog(\n" + "\t".repeat(indent + 1) + localVariables + ",\n" + body.toStringWithIndent(indent + 1) + "\n" + "\t".repeat(indent) + ")";
+        return "\t".repeat(indent) + "Prog(\n" + "\t".repeat(indent + 1) + localVariables + ",\n" + "\t".repeat(indent + 1) + "[\n" + elements.stream().map(e -> e.toStringWithIndent(indent + 2)).reduce((a, b) -> a + ",\n" + b).orElse("") + "\n" + "\t".repeat(indent + 1) + "]\n" + "\t".repeat(indent) + ")";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ProgASTNode extends ASTNode {
 
     @Override
     public String toJson() {
-        return "{\"type\": \"Prog\", \"localVariables\": " + localVariables.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + ", \"body\": " + body.toJson() + "}";
+        return "{\"type\": \"Prog\", \"localVariables\": " + localVariables.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + ", \"elements\": " + elements.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + "}";
     }
 
     @Override
@@ -52,11 +52,14 @@ public class ProgASTNode extends ASTNode {
         Map<String, Integer> bodyFunctionParametersCount = new HashMap<>();
         bodyFunctionParametersCount.putAll(functionParametersCount);
 
-        body.analyze(bodyLocalContext, bodyFunctionParametersCount);
+        for (ASTNode element : elements) {
+            element.analyze(bodyLocalContext, bodyFunctionParametersCount);
+        }
     }
 
     @Override
     public void optimize() {
+
 
     }
 }

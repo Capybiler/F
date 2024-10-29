@@ -222,23 +222,35 @@ public class Parser {
     private ASTNode parseProg() {
         advance();
 
+        if (!match(TokenType.LEFT_PAREN)) {
+            throw new RuntimeException("Expected '(' after prog");
+        }
+
+        advance();
+
         List<AtomASTNode> localVars = new ArrayList<>();
 
-        if (match(TokenType.LEFT_PAREN)) {
-            advance();
-            while (!match(TokenType.RIGHT_PAREN)) {
-                localVars.add((AtomASTNode) parseAtom());
-            }
-            advance();
+        while (!match(TokenType.RIGHT_PAREN)) {
+            localVars.add((AtomASTNode) parseAtom());
         }
 
-        ASTNode body = parseExpression();
+        advance();
 
-        if (!match(TokenType.RIGHT_PAREN)) {
-            throw new RuntimeException("Expected closing parenthesis");
+        List<ASTNode> elements = new ArrayList<>();
+
+        if (!match(TokenType.LEFT_PAREN)) {
+            throw new RuntimeException("Expected '(' after local variables");
         }
 
-        return new ProgASTNode(localVars, body);
+        advance();
+
+        while (!match(TokenType.RIGHT_PAREN)) {
+            elements.add(parseExpression());
+        }
+
+        advance();
+
+        return new ProgASTNode(localVars, elements);
     }
 
     private ASTNode parseWhile() {
