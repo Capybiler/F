@@ -51,11 +51,11 @@ public class FuncASTNode extends ASTNode {
     @Override
     public void analyze(List<String> localContext, Map<String, Integer> functionParametersCount) {
         functionParametersCount.put(name.getName(), parameters.size());
+        localContext.add(name.getName());
 
         List<String> bodyLocalContext = new ArrayList<>();
 
         bodyLocalContext.addAll(localContext);
-        bodyLocalContext.add(name.getName());
         bodyLocalContext.addAll(parameters.stream().map(AtomASTNode::getName).toList());
 
         Map<String, Integer> bodyFunctionParametersCount = new HashMap<>();
