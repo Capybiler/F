@@ -30,7 +30,7 @@ public class BreakASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
-
+    public ASTNode optimize() {
+        return this;
     }
 }

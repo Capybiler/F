@@ -112,7 +112,8 @@ public class ProgramASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
-
+    public ASTNode optimize() {
+        elements.replaceAll(ASTNode::optimize);
+        return this;
     }
 }

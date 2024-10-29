@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class SetqASTNode extends ASTNode {
     private final AtomASTNode variable;
-    private final ASTNode value;
+    private ASTNode value;
 
     public SetqASTNode(AtomASTNode variable, ASTNode value) {
         this.variable = variable;
@@ -53,7 +53,8 @@ public class SetqASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
-
+    public ASTNode optimize() {
+        value = value.optimize();
+        return this;
     }
 }

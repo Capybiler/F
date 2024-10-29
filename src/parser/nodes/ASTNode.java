@@ -14,5 +14,5 @@ public abstract class ASTNode {
 
     public abstract void analyze(List<String> localContext, Map<String, Integer> functionParametersCount);
 
-    public abstract void optimize();
+    public abstract ASTNode optimize();
 }

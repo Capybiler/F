@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 public class WhileASTNode extends ASTNode {
-    private final ASTNode condition;
-    private final ASTNode body;
+    private ASTNode condition;
+    private ASTNode body;
 
     public WhileASTNode(ASTNode condition, ASTNode body) {
         this.condition = condition;
@@ -47,7 +47,16 @@ public class WhileASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
+    public ASTNode optimize() {
+        condition = condition.optimize();
+        body = body.optimize();
 
+        if (condition instanceof LiteralASTNode) {
+            if (!(boolean) ((LiteralASTNode) condition).getValue()) {
+                return new LiteralASTNode(null);
+            }
+        }
+
+        return this;
     }
 }

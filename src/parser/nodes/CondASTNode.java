@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public class CondASTNode extends ASTNode {
-    private final ASTNode condition;
-    private final ASTNode trueBranch;
-    private final ASTNode falseBranch;
+    private ASTNode condition;
+    private ASTNode trueBranch;
+    private ASTNode falseBranch;
 
     public CondASTNode(ASTNode condition, ASTNode trueBranch, ASTNode falseBranch) {
         this.condition = condition;
@@ -62,7 +62,24 @@ public class CondASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
+    public ASTNode optimize() {
+        condition = condition.optimize();
+        trueBranch = trueBranch.optimize();
+        if (falseBranch != null) {
+            falseBranch = falseBranch.optimize();
+        }
 
+        if (condition instanceof LiteralASTNode) {
+            if ((boolean) ((LiteralASTNode) condition).getValue()) {
+                return trueBranch;
+            } else {
+                if (falseBranch != null) {
+                    return falseBranch;
+                }
+                return new LiteralASTNode(null);
+            }
+        }
+
+        return this;
     }
 }

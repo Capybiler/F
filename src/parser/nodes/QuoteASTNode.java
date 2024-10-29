@@ -40,7 +40,7 @@ public class QuoteASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
-
+    public ASTNode optimize() {
+        return this;
     }
 }

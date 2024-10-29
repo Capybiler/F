@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class LambdaASTNode extends ASTNode {
     private final List<AtomASTNode> parameters;
-    private final ASTNode body;
+    private ASTNode body;
 
     public LambdaASTNode(List<AtomASTNode> parameters, ASTNode body) {
         this.parameters = parameters;
@@ -56,7 +56,8 @@ public class LambdaASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
-
+    public ASTNode optimize() {
+        body = body.optimize();
+        return this;
     }
 }

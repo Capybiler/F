@@ -8,7 +8,7 @@ import java.util.Map;
 public class FuncASTNode extends ASTNode {
     private final AtomASTNode name;
     private final List<AtomASTNode> parameters;
-    private final ASTNode body;
+    private ASTNode body;
 
     public FuncASTNode(AtomASTNode name, List<AtomASTNode> parameters, ASTNode body) {
         this.name = name;
@@ -65,7 +65,8 @@ public class FuncASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
-
+    public ASTNode optimize() {
+        body = body.optimize();
+        return this;
     }
 }

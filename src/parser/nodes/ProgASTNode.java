@@ -58,8 +58,30 @@ public class ProgASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
+    public ASTNode optimize() {
+        Integer firstReturnOrBreakIndex = null;
 
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i) instanceof ReturnASTNode || elements.get(i) instanceof BreakASTNode) {
+                firstReturnOrBreakIndex = i;
+                break;
+            }
+        }
 
+        Integer elementsLengthAfterOptimization;
+
+        if (firstReturnOrBreakIndex != null) {
+            elementsLengthAfterOptimization = firstReturnOrBreakIndex + 1;
+        } else {
+            elementsLengthAfterOptimization = elements.size();
+        }
+
+        while (elements.size() > elementsLengthAfterOptimization) {
+            elements.removeLast();
+        }
+
+        elements.replaceAll(ASTNode::optimize);
+
+        return this;
     }
 }

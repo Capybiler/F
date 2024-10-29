@@ -42,7 +42,7 @@ public class AtomASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
-
+    public ASTNode optimize() {
+        return this;
     }
 }

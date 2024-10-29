@@ -39,6 +39,7 @@ public class LiteralASTNode extends ASTNode {
     }
 
     @Override
-    public void optimize() {
+    public ASTNode optimize() {
+        return this;
     }
 }

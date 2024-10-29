@@ -65,6 +65,13 @@ public class Main {
         }
 
         try {
+            tree.optimize();
+        } catch (Exception e) {
+            System.out.println("Error optimizing AST: " + e.getMessage());
+            return;
+        }
+
+        try {
             System.out.println(tree);
 
             if (withIndent) {
