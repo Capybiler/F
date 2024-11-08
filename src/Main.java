@@ -16,11 +16,15 @@ public class Main {
 
         boolean withIndent = false;
         boolean withJson = false;
+        boolean withStandardOutput = false;
+
         for (String arg : args) {
             if (arg.equals("--with-indent")) {
                 withIndent = true;
             } else if (arg.equals("--with-json")) {
                 withJson = true;
+            } else if (arg.equals("--with-standard-output")) {
+                withStandardOutput = true;
             }
         }
 
@@ -72,7 +76,9 @@ public class Main {
         }
 
         try {
-            System.out.println(tree);
+            if (withStandardOutput) {
+                System.out.println(tree);
+            }
 
             if (withIndent) {
                 System.out.println(tree.toStringWithIndent(0));
@@ -84,6 +90,12 @@ public class Main {
 
         } catch (Exception e) {
             System.out.println("Error printing AST: " + e.getMessage());
+        }
+
+        try {
+            tree.interpret();
+        } catch (Exception e) {
+            System.out.println("Error interpreting AST: " + e.getMessage());
         }
     }
 }
