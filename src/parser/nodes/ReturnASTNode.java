@@ -44,4 +44,9 @@ public class ReturnASTNode extends ASTNode {
         value = value.optimize();
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        return value.interpret(context);
+    }
 }

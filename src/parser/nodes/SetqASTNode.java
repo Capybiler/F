@@ -57,4 +57,10 @@ public class SetqASTNode extends ASTNode {
         value = value.optimize();
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        context.put(variable.getName(), value.interpret(context));
+        return null;
+    }
 }

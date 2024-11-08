@@ -42,4 +42,9 @@ public class LiteralASTNode extends ASTNode {
     public ASTNode optimize() {
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        return value;
+    }
 }

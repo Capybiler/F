@@ -65,4 +65,37 @@ public class ListASTNode extends ASTNode {
 
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        if (!(elements.getFirst() instanceof AtomASTNode)) {
+            throw new RuntimeException("First element of a list must be an atom");
+        }
+
+        AtomASTNode firstElement = (AtomASTNode) elements.getFirst();
+
+        if (context.containsKey(firstElement.getName())) {
+            Object value = context.get(firstElement.getName());
+
+            if (!(value instanceof LambdaASTNode)) {
+                throw new RuntimeException("Variable " + firstElement.getName() + " is not a function");
+            }
+
+            LambdaASTNode lambda = (LambdaASTNode) value;
+
+            if (lambda.getParameters().size() != elements.size() - 1) {
+                throw new RuntimeException("Function " + firstElement.getName() + " expects " + lambda.getParameters().size() + " parameters, but got " + (elements.size() - 1) + " parameters");
+            }
+
+            Map<String, Object> newContext = Map.copyOf(context);
+
+            for (int i = 0; i < lambda.getParameters().size(); i++) {
+                newContext.put(lambda.getParameters().get(i).getName(), elements.get(i + 1).interpret(context));
+            }
+
+            return lambda.getBody().interpret(newContext);
+        } else {
+            throw new RuntimeException("Variable " + firstElement.getName() + " is not defined");
+        }
+    }
 }

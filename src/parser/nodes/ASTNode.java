@@ -15,4 +15,6 @@ public abstract class ASTNode {
     public abstract void analyze(List<String> localContext, Map<String, Integer> functionParametersCount);
 
     public abstract ASTNode optimize();
+
+    public abstract Object interpret(Map<String, Object> context);
 }

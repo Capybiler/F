@@ -60,4 +60,9 @@ public class LambdaASTNode extends ASTNode {
         body = body.optimize();
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        return this;
+    }
 }

@@ -59,4 +59,13 @@ public class WhileASTNode extends ASTNode {
 
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        while ((boolean) condition.interpret(context)) {
+            body.interpret(context);
+        }
+
+        return null;
+    }
 }

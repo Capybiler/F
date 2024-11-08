@@ -69,4 +69,10 @@ public class FuncASTNode extends ASTNode {
         body = body.optimize();
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        context.put(name.getName(), new LambdaASTNode(parameters, body));
+        return null;
+    }
 }
