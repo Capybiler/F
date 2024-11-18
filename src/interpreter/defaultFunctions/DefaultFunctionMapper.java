@@ -17,7 +17,7 @@ public class DefaultFunctionMapper {
             case "equal" -> new EqualDefaultFunctionHandler(parameters);
             case "nonequal" -> new NonEqualDefaultFunctionHandler(parameters);
             case "less" -> new LessDefaultFunctionHandler(parameters);
-            case "lessEq" -> new LessEqDefaultFunctionHandler(parameters);
+            case "lesseq" -> new LessEqDefaultFunctionHandler(parameters);
             case "greater" -> new GreaterDefaultFunctionHandler(parameters);
             case "greatereq" -> new GreaterEqDefaultFunctionHandler(parameters);
 
