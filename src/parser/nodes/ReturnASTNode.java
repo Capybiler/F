@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import interpreter.exceptions.ReturnException;
+
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +49,6 @@ public class ReturnASTNode extends ASTNode {
 
     @Override
     public Object interpret(Map<String, Object> context) {
-        return value.interpret(context);
+        throw new ReturnException(value.interpret(context));
     }
 }
