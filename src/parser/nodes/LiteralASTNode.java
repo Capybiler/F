@@ -16,7 +16,7 @@ public class LiteralASTNode extends ASTNode {
 
     @Override
     public String toString() {
-        return "Literal(" + value + ")";
+        return value.toString();
     }
 
     @Override
