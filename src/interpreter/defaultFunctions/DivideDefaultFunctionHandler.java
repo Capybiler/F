@@ -14,8 +14,8 @@ public class DivideDefaultFunctionHandler extends DefaultFunctionHandler {
         Object second = parameters.get(1);
 
         try {
-            long firstInt = (long) first;
-            long secondInt = (long) second;
+            int firstInt = (int) first;
+            int secondInt = (int) second;
             if (secondInt == 0) {
                 throw new IllegalArgumentException("Divide by zero");
             }

@@ -14,8 +14,8 @@ public class MinusDefaultFunctionHandler extends DefaultFunctionHandler {
         Object second = parameters.get(1);
 
         try {
-            long firstInt = (long) first;
-            long secondInt = (long) second;
+            int firstInt = (int) first;
+            int secondInt = (int) second;
             return firstInt - secondInt;
         } catch (ClassCastException e) {
             try {
