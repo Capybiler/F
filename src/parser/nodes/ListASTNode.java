@@ -72,46 +72,45 @@ public class ListASTNode extends ASTNode {
 
     @Override
     public Object interpret(Map<String, Object> context) {
-        if (!(elements.getFirst() instanceof AtomASTNode)) {
-            throw new RuntimeException("First element of a list must be an atom");
+        if (elements.getFirst() instanceof AtomASTNode) {
+            List<Object> interpretedParameters = elements.subList(1, elements.size()).stream().map(e -> e.interpret(context)).toList();
+
+            DefaultFunctionHandler defaultFunctionHandler = DefaultFunctionMapper.getHandler(((AtomASTNode) elements.getFirst()).getName(), interpretedParameters);
+
+            if (defaultFunctionHandler != null) {
+                return defaultFunctionHandler.handle();
+            }
         }
 
-        AtomASTNode firstElement = (AtomASTNode) elements.getFirst();
+        ASTNode firstElement = elements.getFirst();
 
-        List<Object> interpretedParameters = elements.subList(1, elements.size())
-                .stream().map(e -> e.interpret(context)).toList();
+        Object interpretedFirstElement = firstElement.interpret(context);
 
-        DefaultFunctionHandler defaultFunctionHandler = DefaultFunctionMapper.getHandler(
-            firstElement.getName(), interpretedParameters
-        );
-
-        if (defaultFunctionHandler != null) {
-            return defaultFunctionHandler.handle();
+        if (!(interpretedFirstElement instanceof LambdaASTNode)) {
+            throw new RuntimeException("First element of a list must be a function");
         }
 
-        if (context.containsKey(firstElement.getName())) {
-            Object value = context.get(firstElement.getName());
+        LambdaASTNode lambda = (LambdaASTNode) interpretedFirstElement;
 
-            if (!(value instanceof LambdaASTNode)) {
-                throw new RuntimeException("Variable " + firstElement.getName() + " is not a function");
+        if (lambda.getParameters().size() != elements.size() - 1) {
+            String functionName;
+
+            if (elements.getFirst() instanceof AtomASTNode) {
+                functionName = ((AtomASTNode) elements.getFirst()).getName();
+            } else {
+                functionName = "lambda";
             }
 
-            LambdaASTNode lambda = (LambdaASTNode) value;
-
-            if (lambda.getParameters().size() != elements.size() - 1) {
-                throw new RuntimeException("Function " + firstElement.getName() + " expects " + lambda.getParameters().size() + " parameters, but got " + (elements.size() - 1) + " parameters");
-            }
-
-            Map<String, Object> newContext = new HashMap<>();
-            newContext.putAll(context);
-
-            for (int i = 0; i < lambda.getParameters().size(); i++) {
-                newContext.put(lambda.getParameters().get(i).getName(), elements.get(i + 1).interpret(context));
-            }
-
-            return lambda.getBody().interpret(newContext);
-        } else {
-            throw new RuntimeException("Variable " + firstElement.getName() + " is not defined");
+            throw new RuntimeException("Function " + functionName + " expects " + lambda.getParameters().size() + " parameters, but got " + (elements.size() - 1) + " parameters");
         }
+
+        Map<String, Object> newContext = new HashMap<>();
+        newContext.putAll(context);
+
+        for (int i = 0; i < lambda.getParameters().size(); i++) {
+            newContext.put(lambda.getParameters().get(i).getName(), elements.get(i + 1).interpret(context));
+        }
+
+        return lambda.getBody().interpret(newContext);
     }
 }
