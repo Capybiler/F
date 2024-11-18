@@ -2,6 +2,7 @@ package parser.nodes;
 
 import interpreter.defaultFunctions.DefaultFunctionHandler;
 import interpreter.defaultFunctions.DefaultFunctionMapper;
+import interpreter.exceptions.ReturnException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +112,10 @@ public class ListASTNode extends ASTNode {
             newContext.put(lambda.getParameters().get(i).getName(), elements.get(i + 1).interpret(context));
         }
 
-        return lambda.getBody().interpret(newContext);
+        try {
+            return lambda.getBody().interpret(newContext);
+        } catch (ReturnException e) {
+            return e.getValue();
+        }
     }
 }
