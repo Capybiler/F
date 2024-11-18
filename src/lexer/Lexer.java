@@ -293,7 +293,7 @@ public class Lexer {
                     // Plus or minus sign is only allowed at the beginning of a number
                     // If the current token is not empty, throw a lexical analysis error
                     if (!isCurrentTokenEmpty()) {
-                        throw new LexicalAnalysisError('+', lineNum, columnNum);
+                        throw new LexicalAnalysisError(c, lineNum, columnNum);
                     }
 
                     // Save the column number as the beginning of the current token
