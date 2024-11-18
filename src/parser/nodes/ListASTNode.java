@@ -1,5 +1,8 @@
 package parser.nodes;
 
+import interpreter.defaultFunctions.DefaultFunctionHandler;
+import interpreter.defaultFunctions.DefaultFunctionMapper;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +77,17 @@ public class ListASTNode extends ASTNode {
         }
 
         AtomASTNode firstElement = (AtomASTNode) elements.getFirst();
+
+        List<Object> interpretedParameters = elements.subList(1, elements.size())
+                .stream().map(e -> e.interpret(context)).toList();
+
+        DefaultFunctionHandler defaultFunctionHandler = DefaultFunctionMapper.getHandler(
+            firstElement.getName(), interpretedParameters
+        );
+
+        if (defaultFunctionHandler != null) {
+            return defaultFunctionHandler.handle();
+        }
 
         if (context.containsKey(firstElement.getName())) {
             Object value = context.get(firstElement.getName());
