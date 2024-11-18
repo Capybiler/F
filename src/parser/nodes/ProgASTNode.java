@@ -89,9 +89,16 @@ public class ProgASTNode extends ASTNode {
 
     @Override
     public Object interpret(Map<String, Object> context) {
+        Map<String, Object> localContext = new HashMap<>();
+        localContext.putAll(context);
+
+        for (AtomASTNode localVariable : localVariables) {
+            localContext.put(localVariable.getName(), null);
+        }
+
         for (ASTNode element : elements) {
             try {
-                element.interpret(context);
+                element.interpret(localContext);
             } catch (ReturnException e) {
                 return e.getValue();
             }
