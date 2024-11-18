@@ -5,7 +5,7 @@ public class Token {
     private final TokenType type;
     private final TokenSpan span;
 
-    private long intValue;
+    private int intValue;
     private double realValue;
     private boolean boolValue;
     private String identifier;
@@ -15,7 +15,7 @@ public class Token {
         this.span = span;
     }
 
-    public Token(TokenType type, TokenSpan span, long intValue) {
+    public Token(TokenType type, TokenSpan span, int intValue) {
         this.type = type;
         this.span = span;
         this.intValue = intValue;
@@ -47,7 +47,7 @@ public class Token {
         return span;
     }
 
-    public long getIntValue() {
+    public int getIntValue() {
         return intValue;
     }
 

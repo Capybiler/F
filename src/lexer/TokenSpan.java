@@ -2,23 +2,23 @@ package lexer;
 
 
 public class TokenSpan {
-    private final long lineNum, columnBegin, columnEnd;
+    private final int lineNum, columnBegin, columnEnd;
 
-    public TokenSpan(long lineNum, long columnBegin, long columnEnd) {
+    public TokenSpan(int lineNum, int columnBegin, int columnEnd) {
         this.lineNum = lineNum;
         this.columnBegin = columnBegin;
         this.columnEnd = columnEnd;
     }
 
-    public long getLineNum() {
+    public int getLineNum() {
         return lineNum;
     }
 
-    public long getColumnBegin() {
+    public int getColumnBegin() {
         return columnBegin;
     }
 
-    public long getColumnEnd() {
+    public int getColumnEnd() {
         return columnEnd;
     }
 
