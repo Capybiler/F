@@ -10,7 +10,6 @@ public class IsIntDefaultFunctionHandler extends DefaultFunctionHandler {
 
     @Override
     public Object handle() {
-        // TODO: Implement this
-        return null;
+        return this.parameters.getFirst() instanceof Integer;
     }
 }
