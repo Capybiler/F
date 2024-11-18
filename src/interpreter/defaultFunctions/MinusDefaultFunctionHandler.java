@@ -5,14 +5,11 @@ import java.util.List;
 public class MinusDefaultFunctionHandler extends DefaultFunctionHandler {
     public MinusDefaultFunctionHandler(List<Object> parameters) {
         super(parameters);
+        this.expectedParametersCount = 2;
     }
 
     @Override
     public Object handle() {
-        if (parameters.size() != 2) {
-            throw new IllegalArgumentException("Minus function should have exactly 2 parameters");
-        }
-
         Object first = parameters.get(0);
         Object second = parameters.get(1);
 

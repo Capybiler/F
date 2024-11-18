@@ -5,14 +5,11 @@ import java.util.List;
 public class DivideDefaultFunctionHandler extends DefaultFunctionHandler {
     public DivideDefaultFunctionHandler(List<Object> parameters) {
         super(parameters);
+        this.expectedParametersCount = 2;
     }
 
     @Override
     public Object handle() {
-        if (parameters.size() != 2) {
-            throw new IllegalArgumentException("Divide function should have exactly 2 parameters");
-        }
-
         Object first = parameters.get(0);
         Object second = parameters.get(1);
 
