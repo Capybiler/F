@@ -1,5 +1,7 @@
 package interpreter.defaultFunctions;
 
+import parser.nodes.ListASTNode;
+
 import java.util.List;
 
 public class TailDefaultFunctionHandler extends DefaultFunctionHandler {
@@ -10,7 +12,16 @@ public class TailDefaultFunctionHandler extends DefaultFunctionHandler {
 
     @Override
     public Object handle() {
-        // TODO: Implement this
-        return null;
+        if (!(parameters.getFirst() instanceof ListASTNode)) {
+            throw new IllegalArgumentException("Expected list as a parameter, but got " + parameters.getFirst().getClass().getSimpleName());
+        }
+
+        ListASTNode list = (ListASTNode) parameters.getFirst();
+
+        if (list.getElements().isEmpty()) {
+            throw new IllegalArgumentException("Cannot get tail of an empty list");
+        }
+
+        return new ListASTNode(list.getElements().subList(1, list.getElements().size()));
     }
 }
