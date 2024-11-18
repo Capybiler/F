@@ -1,5 +1,7 @@
 package interpreter.defaultFunctions;
 
+import parser.nodes.AtomASTNode;
+
 import java.util.List;
 
 public class IsAtomDefaultFunctionHandler extends DefaultFunctionHandler {
@@ -10,7 +12,6 @@ public class IsAtomDefaultFunctionHandler extends DefaultFunctionHandler {
 
     @Override
     public Object handle() {
-        // TODO: Implement this
-        return null;
+        return parameters.getFirst() instanceof AtomASTNode;
     }
 }
