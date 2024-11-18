@@ -1,5 +1,7 @@
 package interpreter.defaultFunctions;
 
+import parser.nodes.ListASTNode;
+
 import java.util.List;
 
 public class IsListDefaultFunctionHandler extends DefaultFunctionHandler {
@@ -10,7 +12,6 @@ public class IsListDefaultFunctionHandler extends DefaultFunctionHandler {
 
     @Override
     public Object handle() {
-        // TODO: Implement this
-        return null;
+        return parameters.getFirst() instanceof ListASTNode;
     }
 }
