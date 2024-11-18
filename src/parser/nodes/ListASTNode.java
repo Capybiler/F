@@ -1,5 +1,6 @@
 package parser.nodes;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +88,8 @@ public class ListASTNode extends ASTNode {
                 throw new RuntimeException("Function " + firstElement.getName() + " expects " + lambda.getParameters().size() + " parameters, but got " + (elements.size() - 1) + " parameters");
             }
 
-            Map<String, Object> newContext = Map.copyOf(context);
+            Map<String, Object> newContext = new HashMap<>();
+            newContext.putAll(context);
 
             for (int i = 0; i < lambda.getParameters().size(); i++) {
                 newContext.put(lambda.getParameters().get(i).getName(), elements.get(i + 1).interpret(context));
