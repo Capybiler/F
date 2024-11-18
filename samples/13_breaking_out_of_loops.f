@@ -1,9 +1,8 @@
 (setq counter 0)
 
-(while true (prog () (
-           (setq counter (plus counter 1))
-           (cond (greatereq counter 6) (break))
-        )
+(while true (cond (less counter 6)
+        (setq counter (plus counter 1))
+        (break)
     )
 )
 
