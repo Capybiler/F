@@ -76,7 +76,11 @@ public class ListASTNode extends ASTNode {
         if (elements.getFirst() instanceof AtomASTNode) {
             List<Object> interpretedParameters = elements.subList(1, elements.size()).stream().map(e -> e.interpret(context)).toList();
 
-            DefaultFunctionHandler defaultFunctionHandler = DefaultFunctionMapper.getHandler(((AtomASTNode) elements.getFirst()).getName(), interpretedParameters);
+            DefaultFunctionHandler defaultFunctionHandler = DefaultFunctionMapper.getHandler(
+                ((AtomASTNode) elements.getFirst()).getName(),
+                interpretedParameters,
+                context
+            );
 
             if (defaultFunctionHandler != null) {
                 return defaultFunctionHandler.handle();

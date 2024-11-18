@@ -1,9 +1,12 @@
 package interpreter.defaultFunctions;
 
 import java.util.List;
+import java.util.Map;
 
 public class DefaultFunctionMapper {
-    public static DefaultFunctionHandler getHandler(String functionName, List<Object> parameters) {
+    public static DefaultFunctionHandler getHandler(
+            String functionName, List<Object> parameters, Map<String, Object> context
+    ) {
         return switch (functionName) {
             case "plus" -> new PlusDefaultFunctionHandler(parameters);
             case "minus" -> new MinusDefaultFunctionHandler(parameters);
@@ -33,7 +36,7 @@ public class DefaultFunctionMapper {
             case "xor" -> new XorDefaultFunctionHandler(parameters);
             case "not" -> new NotDefaultFunctionHandler(parameters);
 
-            case "eval" -> new EvalDefaultFunctionHandler(parameters);
+            case "eval" -> new EvalDefaultFunctionHandler(parameters, context);
 
             default -> null;
         };
