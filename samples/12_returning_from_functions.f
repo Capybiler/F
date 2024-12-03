@@ -1,6 +1,9 @@
 (func earlyReturn (x)
-  (cond (less x 0) (return 'negative))
-  (times x 2)
+    (prog () (
+            (cond (less x 0) (return 'negative))
+            (return (times x 2))
+        )
+    )
 )
 (earlyReturn -5)
 (earlyReturn 5)

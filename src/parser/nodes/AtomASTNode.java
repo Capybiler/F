@@ -45,4 +45,12 @@ public class AtomASTNode extends ASTNode {
     public ASTNode optimize() {
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        if (!context.containsKey(name)) {
+            throw new RuntimeException("Variable " + name + " is not defined");
+        }
+        return context.get(name);
+    }
 }

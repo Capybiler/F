@@ -82,4 +82,12 @@ public class CondASTNode extends ASTNode {
 
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        if (falseBranch == null) {
+            return (boolean) condition.interpret(context) ? trueBranch.interpret(context) : null;
+        }
+        return (boolean) condition.interpret(context) ? trueBranch.interpret(context) : falseBranch.interpret(context);
+    }
 }

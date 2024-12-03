@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import interpreter.exceptions.BreakException;
+
 import java.util.List;
 import java.util.Map;
 
@@ -32,5 +34,10 @@ public class BreakASTNode extends ASTNode {
     @Override
     public ASTNode optimize() {
         return this;
+    }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        throw new BreakException();
     }
 }

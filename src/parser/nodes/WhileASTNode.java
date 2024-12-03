@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import interpreter.exceptions.BreakException;
+
 import java.util.List;
 import java.util.Map;
 
@@ -58,5 +60,18 @@ public class WhileASTNode extends ASTNode {
         }
 
         return this;
+    }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        while ((boolean) condition.interpret(context)) {
+            try {
+                body.interpret(context);
+            } catch (BreakException e) {
+                break;
+            }
+        }
+
+        return null;
     }
 }

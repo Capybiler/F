@@ -16,7 +16,7 @@ public class LiteralASTNode extends ASTNode {
 
     @Override
     public String toString() {
-        return "Literal(" + value + ")";
+        return value.toString();
     }
 
     @Override
@@ -41,5 +41,10 @@ public class LiteralASTNode extends ASTNode {
     @Override
     public ASTNode optimize() {
         return this;
+    }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        return value;
     }
 }

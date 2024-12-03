@@ -1,5 +1,7 @@
 package parser.nodes;
 
+import interpreter.exceptions.ReturnException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,5 +85,25 @@ public class ProgASTNode extends ASTNode {
         elements.replaceAll(ASTNode::optimize);
 
         return this;
+    }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        Map<String, Object> localContext = new HashMap<>();
+        localContext.putAll(context);
+
+        for (AtomASTNode localVariable : localVariables) {
+            localContext.put(localVariable.getName(), null);
+        }
+
+        for (ASTNode element : elements) {
+            try {
+                element.interpret(localContext);
+            } catch (ReturnException e) {
+                return e.getValue();
+            }
+        }
+
+        return null;
     }
 }

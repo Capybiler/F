@@ -8,12 +8,12 @@ import java.util.Map;
 
 public class Lexer {
     private final String input;
-    private final long length;
-    private long index;
-    private long lineNum;
-    private long columnNum;
-    private long tokenBeginLineNum;
-    private long tokenBeginColumnNum;
+    private final int length;
+    private int index;
+    private int lineNum;
+    private int columnNum;
+    private int tokenBeginLineNum;
+    private int tokenBeginColumnNum;
     private boolean nextIsNewLine;
     private boolean isNumericCurrentToken;
     private boolean isRealCurrentToken;
@@ -164,7 +164,7 @@ public class Lexer {
         String tokenString = currentTokenStringBuilder.toString();
 
         // Calculate the end column number of the token
-        long tokenEndColumnNum = tokenBeginColumnNum + tokenString.length() - 1;
+        int tokenEndColumnNum = tokenBeginColumnNum + tokenString.length() - 1;
 
         // Check if the token string is a keyword
         TokenType tokenType = keywords.get(tokenString);
@@ -181,7 +181,7 @@ public class Lexer {
                     new Token(
                             TokenType.INTEGER,
                             new TokenSpan(tokenBeginLineNum, tokenBeginColumnNum, tokenEndColumnNum),
-                            Long.parseLong(tokenString)
+                            Integer.parseInt(tokenString)
                     )
             );
             return;
@@ -293,7 +293,7 @@ public class Lexer {
                     // Plus or minus sign is only allowed at the beginning of a number
                     // If the current token is not empty, throw a lexical analysis error
                     if (!isCurrentTokenEmpty()) {
-                        throw new LexicalAnalysisError('+', lineNum, columnNum);
+                        throw new LexicalAnalysisError(c, lineNum, columnNum);
                     }
 
                     // Save the column number as the beginning of the current token

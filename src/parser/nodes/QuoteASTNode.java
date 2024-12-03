@@ -43,4 +43,9 @@ public class QuoteASTNode extends ASTNode {
     public ASTNode optimize() {
         return this;
     }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        return quotedElement;
+    }
 }

@@ -1,5 +1,8 @@
 package parser.nodes;
 
+import interpreter.exceptions.BreakException;
+import interpreter.exceptions.ReturnException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,5 +118,27 @@ public class ProgramASTNode extends ASTNode {
     public ASTNode optimize() {
         elements.replaceAll(ASTNode::optimize);
         return this;
+    }
+
+    public Object interpret() {
+        return interpret(new HashMap<>());
+    }
+
+    @Override
+    public Object interpret(Map<String, Object> context) {
+        for (ASTNode element : elements) {
+            try {
+                Object result = element.interpret(context);
+                if (result != null) {
+                    System.out.println(result);
+                }
+            } catch (ReturnException e) {
+                return e.getValue();
+            } catch (BreakException e) {
+                break;
+            }
+        }
+
+        return null;
     }
 }
