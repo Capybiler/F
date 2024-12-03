@@ -112,6 +112,10 @@ public class ListASTNode extends ASTNode {
         Map<String, Object> newContext = new HashMap<>();
         newContext.putAll(context);
 
+        for (String key : lambda.getCapturedContext().keySet()) {
+            newContext.put(key, lambda.getCapturedContext().get(key));
+        }
+
         for (int i = 0; i < lambda.getParameters().size(); i++) {
             newContext.put(lambda.getParameters().get(i).getName(), elements.get(i + 1).interpret(context));
         }

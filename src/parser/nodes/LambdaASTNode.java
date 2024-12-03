@@ -8,6 +8,7 @@ import java.util.Map;
 public class LambdaASTNode extends ASTNode {
     private final List<AtomASTNode> parameters;
     private ASTNode body;
+    private final Map<String, Object> capturedContext = new HashMap<>();
 
     public LambdaASTNode(List<AtomASTNode> parameters, ASTNode body) {
         this.parameters = parameters;
@@ -37,6 +38,10 @@ public class LambdaASTNode extends ASTNode {
         return true;
     }
 
+    public Map<String, Object> getCapturedContext() {
+        return capturedContext;
+    }
+
     @Override
     public String toJson() {
         return "{\"type\": \"Lambda\", \"parameters\": " + parameters.stream().map(ASTNode::toJson).reduce((a, b) -> a + ", " + b).stream().toList() + ", \"body\": " + body.toJson() + "}";
@@ -63,6 +68,7 @@ public class LambdaASTNode extends ASTNode {
 
     @Override
     public Object interpret(Map<String, Object> context) {
+        capturedContext.putAll(context);
         return this;
     }
 }

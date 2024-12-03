@@ -72,7 +72,7 @@ public class FuncASTNode extends ASTNode {
 
     @Override
     public Object interpret(Map<String, Object> context) {
-        context.put(name.getName(), new LambdaASTNode(parameters, body));
+        context.put(name.getName(), (new LambdaASTNode(parameters, body)).interpret(context));
         return null;
     }
 }
